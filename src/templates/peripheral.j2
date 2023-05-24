@@ -1,0 +1,27 @@
+#ifndef _SVD_2_CPP_OBJECTS_{{NAME}}_INCLUDE_HPP_
+#define _SVD_2_CPP_OBJECTS_{{NAME}}_INCLUDE_HPP_
+
+
+
+#include "Bitfield.hpp"
+#include "Register.hpp"
+#include "Peripheral.hpp"
+#include "Types.hpp"
+
+{% if attr_derivedFrom is defined %}
+#include "{{attr_derivedFrom}}.hpp"
+
+using {{NAME}} = Peripheral<{{baseAddress}}, {{attr_derivedFrom}}_>;
+{% else %}
+// Register definitions
+
+{% include 'bitfields_struct.j2' %}
+
+{% include 'register_struct.j2' %}
+
+
+using {{NAME}} = Peripheral<{{baseAddress}}, {{NAME}}_>;
+
+{% endif %}
+
+#endif  // _SVD_2_CPP_OBJECTS_{{NAME}}_INCLUDE_HPP_

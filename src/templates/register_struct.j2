@@ -1,0 +1,18 @@
+
+struct {{NAME}}_ {
+
+
+{% for register in registers.register %}
+    Register<{{register.addressOffset}}, {{register.name}}_> {{register.name}};
+{% endfor %}
+
+    {{NAME}}_(REG_ADDR base) : 
+{% for register in registers.register %}
+        {{register.name}}{base}
+{%- if not loop.last %}
+,
+{% else %}
+ {};
+{% endif %}
+{% endfor %}
+};

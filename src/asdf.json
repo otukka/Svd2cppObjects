@@ -1,0 +1,484 @@
+{
+    "name": "Ethernet_MAC",
+    "description": "Ethernet: media access control\n      (MAC)",
+    "groupName": "Ethernet",
+    "baseAddress": "0x40028000",
+    "addressBlock": { "offset": "0x0", "size": "0x61", "usage": "registers" },
+    "interrupt": [
+        { "name": "ETH", "description": "Ethernet global interrupt", "value": "61" },
+        { "name": "ETH_WKUP", "description": "Ethernet Wakeup through EXTI line\n        interrupt", "value": "62" }
+    ],
+    "registers": {
+        "register": [
+            {
+                "name": "MACCR",
+                "displayName": "MACCR",
+                "description": "Ethernet MAC configuration\n          register",
+                "addressOffset": "0x0",
+                "size": "0x20",
+                "access": "read-write",
+                "resetValue": "0x8000",
+                "fields": {
+                    "field": [
+                        { "name": "RE", "description": "RE", "bitOffset": "2", "bitWidth": "1" },
+                        { "name": "TE", "description": "TE", "bitOffset": "3", "bitWidth": "1" },
+                        { "name": "DC", "description": "DC", "bitOffset": "4", "bitWidth": "1" },
+                        { "name": "BL", "description": "BL", "bitOffset": "5", "bitWidth": "2" },
+                        { "name": "APCS", "description": "APCS", "bitOffset": "7", "bitWidth": "1" },
+                        { "name": "RD", "description": "RD", "bitOffset": "9", "bitWidth": "1" },
+                        { "name": "IPCO", "description": "IPCO", "bitOffset": "10", "bitWidth": "1" },
+                        { "name": "DM", "description": "DM", "bitOffset": "11", "bitWidth": "1" },
+                        { "name": "LM", "description": "LM", "bitOffset": "12", "bitWidth": "1" },
+                        { "name": "ROD", "description": "ROD", "bitOffset": "13", "bitWidth": "1" },
+                        { "name": "FES", "description": "FES", "bitOffset": "14", "bitWidth": "1" },
+                        { "name": "CSD", "description": "CSD", "bitOffset": "16", "bitWidth": "1" },
+                        { "name": "IFG", "description": "IFG", "bitOffset": "17", "bitWidth": "3" },
+                        { "name": "JD", "description": "JD", "bitOffset": "22", "bitWidth": "1" },
+                        { "name": "WD", "description": "WD", "bitOffset": "23", "bitWidth": "1" },
+                        { "name": "CSTF", "description": "CSTF", "bitOffset": "25", "bitWidth": "1" }
+                    ]
+                }
+            },
+            {
+                "name": "MACFFR",
+                "displayName": "MACFFR",
+                "description": "Ethernet MAC frame filter\n          register",
+                "addressOffset": "0x4",
+                "size": "0x20",
+                "access": "read-write",
+                "resetValue": "0x00000000",
+                "fields": {
+                    "field": [
+                        { "name": "PM", "description": "Promiscuous mode", "bitOffset": "0", "bitWidth": "1" },
+                        { "name": "HU", "description": "Hash unicast", "bitOffset": "1", "bitWidth": "1" },
+                        { "name": "HM", "description": "Hash multicast", "bitOffset": "2", "bitWidth": "1" },
+                        {
+                            "name": "DAIF",
+                            "description": "Destination address inverse\n              filtering",
+                            "bitOffset": "3",
+                            "bitWidth": "1"
+                        },
+                        { "name": "PAM", "description": "Pass all multicast", "bitOffset": "4", "bitWidth": "1" },
+                        { "name": "BFD", "description": "Broadcast frames disable", "bitOffset": "5", "bitWidth": "1" },
+                        { "name": "PCF", "description": "Pass control frames", "bitOffset": "6", "bitWidth": "1" },
+                        {
+                            "name": "SAIF",
+                            "description": "Source address inverse\n              filtering",
+                            "bitOffset": "8",
+                            "bitWidth": "1"
+                        },
+                        { "name": "SAF", "description": "Source address filter", "bitOffset": "9", "bitWidth": "1" },
+                        { "name": "HPF", "description": "Hash or perfect filter", "bitOffset": "10", "bitWidth": "1" },
+                        { "name": "RA", "description": "Receive all", "bitOffset": "31", "bitWidth": "1" }
+                    ]
+                }
+            },
+            {
+                "name": "MACHTHR",
+                "displayName": "MACHTHR",
+                "description": "Ethernet MAC hash table high\n          register",
+                "addressOffset": "0x8",
+                "size": "0x20",
+                "access": "read-write",
+                "resetValue": "0x00000000",
+                "fields": {
+                    "field": [{ "name": "HTH", "description": "Hash table high", "bitOffset": "0", "bitWidth": "32" }]
+                }
+            },
+            {
+                "name": "MACHTLR",
+                "displayName": "MACHTLR",
+                "description": "Ethernet MAC hash table low\n          register",
+                "addressOffset": "0xC",
+                "size": "0x20",
+                "access": "read-write",
+                "resetValue": "0x00000000",
+                "fields": {
+                    "field": [{ "name": "HTL", "description": "Hash table low", "bitOffset": "0", "bitWidth": "32" }]
+                }
+            },
+            {
+                "name": "MACMIIAR",
+                "displayName": "MACMIIAR",
+                "description": "Ethernet MAC MII address\n          register",
+                "addressOffset": "0x10",
+                "size": "0x20",
+                "access": "read-write",
+                "resetValue": "0x00000000",
+                "fields": {
+                    "field": [
+                        { "name": "MB", "description": "MII busy", "bitOffset": "0", "bitWidth": "1" },
+                        { "name": "MW", "description": "MII write", "bitOffset": "1", "bitWidth": "1" },
+                        { "name": "CR", "description": "Clock range", "bitOffset": "2", "bitWidth": "3" },
+                        { "name": "MR", "description": "MII register", "bitOffset": "6", "bitWidth": "5" },
+                        { "name": "PA", "description": "PHY address", "bitOffset": "11", "bitWidth": "5" }
+                    ]
+                }
+            },
+            {
+                "name": "MACMIIDR",
+                "displayName": "MACMIIDR",
+                "description": "Ethernet MAC MII data register",
+                "addressOffset": "0x14",
+                "size": "0x20",
+                "access": "read-write",
+                "resetValue": "0x00000000",
+                "fields": { "field": [{ "name": "MD", "description": "MII data", "bitOffset": "0", "bitWidth": "16" }] }
+            },
+            {
+                "name": "MACFCR",
+                "displayName": "MACFCR",
+                "description": "Ethernet MAC flow control\n          register",
+                "addressOffset": "0x18",
+                "size": "0x20",
+                "access": "read-write",
+                "resetValue": "0x00000000",
+                "fields": {
+                    "field": [
+                        {
+                            "name": "FCB",
+                            "description": "Flow control busy/back pressure\n              activate",
+                            "bitOffset": "0",
+                            "bitWidth": "1"
+                        },
+                        {
+                            "name": "TFCE",
+                            "description": "Transmit flow control\n              enable",
+                            "bitOffset": "1",
+                            "bitWidth": "1"
+                        },
+                        {
+                            "name": "RFCE",
+                            "description": "Receive flow control\n              enable",
+                            "bitOffset": "2",
+                            "bitWidth": "1"
+                        },
+                        {
+                            "name": "UPFD",
+                            "description": "Unicast pause frame detect",
+                            "bitOffset": "3",
+                            "bitWidth": "1"
+                        },
+                        { "name": "PLT", "description": "Pause low threshold", "bitOffset": "4", "bitWidth": "2" },
+                        {
+                            "name": "ZQPD",
+                            "description": "Zero-quanta pause disable",
+                            "bitOffset": "7",
+                            "bitWidth": "1"
+                        },
+                        { "name": "PT", "description": "Pause time", "bitOffset": "16", "bitWidth": "16" }
+                    ]
+                }
+            },
+            {
+                "name": "MACVLANTR",
+                "displayName": "MACVLANTR",
+                "description": "Ethernet MAC VLAN tag register",
+                "addressOffset": "0x1C",
+                "size": "0x20",
+                "access": "read-write",
+                "resetValue": "0x00000000",
+                "fields": {
+                    "field": [
+                        { "name": "VLANTI", "description": "VLAN tag identifier", "bitOffset": "0", "bitWidth": "16" },
+                        {
+                            "name": "VLANTC",
+                            "description": "12-bit VLAN tag comparison",
+                            "bitOffset": "16",
+                            "bitWidth": "1"
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "MACPMTCSR",
+                "displayName": "MACPMTCSR",
+                "description": "Ethernet MAC PMT control and status\n          register",
+                "addressOffset": "0x2C",
+                "size": "0x20",
+                "access": "read-write",
+                "resetValue": "0x00000000",
+                "fields": {
+                    "field": [
+                        { "name": "PD", "description": "Power down", "bitOffset": "0", "bitWidth": "1" },
+                        { "name": "MPE", "description": "Magic Packet enable", "bitOffset": "1", "bitWidth": "1" },
+                        { "name": "WFE", "description": "Wakeup frame enable", "bitOffset": "2", "bitWidth": "1" },
+                        { "name": "MPR", "description": "Magic packet received", "bitOffset": "5", "bitWidth": "1" },
+                        { "name": "WFR", "description": "Wakeup frame received", "bitOffset": "6", "bitWidth": "1" },
+                        { "name": "GU", "description": "Global unicast", "bitOffset": "9", "bitWidth": "1" },
+                        {
+                            "name": "WFFRPR",
+                            "description": "Wakeup frame filter register pointer\n              reset",
+                            "bitOffset": "31",
+                            "bitWidth": "1"
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "MACDBGR",
+                "displayName": "MACDBGR",
+                "description": "Ethernet MAC debug register",
+                "addressOffset": "0x34",
+                "size": "0x20",
+                "access": "read-only",
+                "resetValue": "0x00000000",
+                "fields": {
+                    "field": [
+                        {
+                            "name": "MMRPEA",
+                            "description": "MAC MII receive protocol engine\n              active",
+                            "bitOffset": "0",
+                            "bitWidth": "1"
+                        },
+                        {
+                            "name": "MSFRWCS",
+                            "description": "MAC small FIFO read / write controllers\n              status",
+                            "bitOffset": "1",
+                            "bitWidth": "1"
+                        },
+                        {
+                            "name": "RFWRA",
+                            "description": "Rx FIFO write controller\n              active",
+                            "bitOffset": "4",
+                            "bitWidth": "1"
+                        },
+                        {
+                            "name": "RFRCS",
+                            "description": "Rx FIFO read controller\n              status",
+                            "bitOffset": "5",
+                            "bitWidth": "1"
+                        },
+                        { "name": "RFFL", "description": "Rx FIFO fill level", "bitOffset": "8", "bitWidth": "1" },
+                        {
+                            "name": "MMTEA",
+                            "description": "MAC MII transmit engine\n              active",
+                            "bitOffset": "16",
+                            "bitWidth": "1"
+                        },
+                        {
+                            "name": "MTFCS",
+                            "description": "MAC transmit frame controller\n              status",
+                            "bitOffset": "17",
+                            "bitWidth": "2"
+                        },
+                        {
+                            "name": "MTP",
+                            "description": "MAC transmitter in pause",
+                            "bitOffset": "19",
+                            "bitWidth": "1"
+                        },
+                        { "name": "TFRS", "description": "Tx FIFO read status", "bitOffset": "20", "bitWidth": "2" },
+                        { "name": "TFWA", "description": "Tx FIFO write active", "bitOffset": "22", "bitWidth": "1" },
+                        { "name": "TFNE", "description": "Tx FIFO not empty", "bitOffset": "24", "bitWidth": "1" },
+                        { "name": "TFF", "description": "Tx FIFO full", "bitOffset": "25", "bitWidth": "1" }
+                    ]
+                }
+            },
+            {
+                "name": "MACSR",
+                "displayName": "MACSR",
+                "description": "Ethernet MAC interrupt status\n          register",
+                "addressOffset": "0x38",
+                "size": "0x20",
+                "resetValue": "0x00000000",
+                "fields": {
+                    "field": [
+                        {
+                            "name": "PMTS",
+                            "description": "PMT status",
+                            "bitOffset": "3",
+                            "bitWidth": "1",
+                            "access": "read-only"
+                        },
+                        {
+                            "name": "MMCS",
+                            "description": "MMC status",
+                            "bitOffset": "4",
+                            "bitWidth": "1",
+                            "access": "read-only"
+                        },
+                        {
+                            "name": "MMCRS",
+                            "description": "MMC receive status",
+                            "bitOffset": "5",
+                            "bitWidth": "1",
+                            "access": "read-only"
+                        },
+                        {
+                            "name": "MMCTS",
+                            "description": "MMC transmit status",
+                            "bitOffset": "6",
+                            "bitWidth": "1",
+                            "access": "read-only"
+                        },
+                        {
+                            "name": "TSTS",
+                            "description": "Time stamp trigger status",
+                            "bitOffset": "9",
+                            "bitWidth": "1",
+                            "access": "read-write"
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "MACIMR",
+                "displayName": "MACIMR",
+                "description": "Ethernet MAC interrupt mask\n          register",
+                "addressOffset": "0x3C",
+                "size": "0x20",
+                "access": "read-write",
+                "resetValue": "0x00000000",
+                "fields": {
+                    "field": [
+                        { "name": "PMTIM", "description": "PMT interrupt mask", "bitOffset": "3", "bitWidth": "1" },
+                        {
+                            "name": "TSTIM",
+                            "description": "Time stamp trigger interrupt\n              mask",
+                            "bitOffset": "9",
+                            "bitWidth": "1"
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "MACA0HR",
+                "displayName": "MACA0HR",
+                "description": "Ethernet MAC address 0 high\n          register",
+                "addressOffset": "0x40",
+                "size": "0x20",
+                "resetValue": "0x0010FFFF",
+                "fields": {
+                    "field": [
+                        {
+                            "name": "MACA0H",
+                            "description": "MAC address0 high",
+                            "bitOffset": "0",
+                            "bitWidth": "16",
+                            "access": "read-write"
+                        },
+                        { "name": "MO", "description": "MO", "bitOffset": "31", "bitWidth": "1", "access": "read-only" }
+                    ]
+                }
+            },
+            {
+                "name": "MACA0LR",
+                "displayName": "MACA0LR",
+                "description": "Ethernet MAC address 0 low\n          register",
+                "addressOffset": "0x44",
+                "size": "0x20",
+                "access": "read-write",
+                "resetValue": "0xFFFFFFFF",
+                "fields": {
+                    "field": [
+                        { "name": "MACA0L", "description": "MAC address0 low", "bitOffset": "0", "bitWidth": "32" }
+                    ]
+                }
+            },
+            {
+                "name": "MACA1HR",
+                "displayName": "MACA1HR",
+                "description": "Ethernet MAC address 1 high\n          register",
+                "addressOffset": "0x48",
+                "size": "0x20",
+                "access": "read-write",
+                "resetValue": "0xFFFF",
+                "fields": {
+                    "field": [
+                        { "name": "MACA1H", "description": "MAC address1 high", "bitOffset": "0", "bitWidth": "16" },
+                        { "name": "MBC", "description": "Mask byte control", "bitOffset": "24", "bitWidth": "6" },
+                        { "name": "SA", "description": "Source address", "bitOffset": "30", "bitWidth": "1" },
+                        { "name": "AE", "description": "Address enable", "bitOffset": "31", "bitWidth": "1" }
+                    ]
+                }
+            },
+            {
+                "name": "MACA1LR",
+                "displayName": "MACA1LR",
+                "description": "Ethernet MAC address1 low\n          register",
+                "addressOffset": "0x4C",
+                "size": "0x20",
+                "access": "read-write",
+                "resetValue": "0xFFFFFFFF",
+                "fields": {
+                    "field": [
+                        { "name": "MACA1LR", "description": "MAC address1 low", "bitOffset": "0", "bitWidth": "32" }
+                    ]
+                }
+            },
+            {
+                "name": "MACA2HR",
+                "displayName": "MACA2HR",
+                "description": "Ethernet MAC address 2 high\n          register",
+                "addressOffset": "0x50",
+                "size": "0x20",
+                "access": "read-write",
+                "resetValue": "0xFFFF",
+                "fields": {
+                    "field": [
+                        { "name": "MAC2AH", "description": "MAC address2 high", "bitOffset": "0", "bitWidth": "16" },
+                        { "name": "MBC", "description": "Mask byte control", "bitOffset": "24", "bitWidth": "6" },
+                        { "name": "SA", "description": "Source address", "bitOffset": "30", "bitWidth": "1" },
+                        { "name": "AE", "description": "Address enable", "bitOffset": "31", "bitWidth": "1" }
+                    ]
+                }
+            },
+            {
+                "name": "MACA2LR",
+                "displayName": "MACA2LR",
+                "description": "Ethernet MAC address 2 low\n          register",
+                "addressOffset": "0x54",
+                "size": "0x20",
+                "access": "read-write",
+                "resetValue": "0xFFFFFFFF",
+                "fields": {
+                    "field": [
+                        { "name": "MACA2L", "description": "MAC address2 low", "bitOffset": "0", "bitWidth": "31" }
+                    ]
+                }
+            },
+            {
+                "name": "MACA3HR",
+                "displayName": "MACA3HR",
+                "description": "Ethernet MAC address 3 high\n          register",
+                "addressOffset": "0x58",
+                "size": "0x20",
+                "access": "read-write",
+                "resetValue": "0xFFFF",
+                "fields": {
+                    "field": [
+                        { "name": "MACA3H", "description": "MAC address3 high", "bitOffset": "0", "bitWidth": "16" },
+                        { "name": "MBC", "description": "Mask byte control", "bitOffset": "24", "bitWidth": "6" },
+                        { "name": "SA", "description": "Source address", "bitOffset": "30", "bitWidth": "1" },
+                        { "name": "AE", "description": "Address enable", "bitOffset": "31", "bitWidth": "1" }
+                    ]
+                }
+            },
+            {
+                "name": "MACA3LR",
+                "displayName": "MACA3LR",
+                "description": "Ethernet MAC address 3 low\n          register",
+                "addressOffset": "0x5C",
+                "size": "0x20",
+                "access": "read-write",
+                "resetValue": "0xFFFFFFFF",
+                "fields": {
+                    "field": [
+                        { "name": "MBCA3L", "description": "MAC address3 low", "bitOffset": "0", "bitWidth": "32" }
+                    ]
+                }
+            },
+            {
+                "name": "MACRWUFFR",
+                "displayName": "MACRWUFFR",
+                "description": "Ethernet MAC remote wakeup frame filter\n          register",
+                "addressOffset": "0x28",
+                "size": "0x20",
+                "access": "read-write",
+                "resetValue": "0x00000000"
+            }
+        ]
+    },
+    "NAME": "ETHERNET_MAC"
+}
