@@ -8,6 +8,8 @@
 #include "Peripheral.hpp"
 #include "Types.hpp"
 
+namespace Svd2cppObjects {
+
 {% if attr_derivedFrom is defined %}
 #include "{{attr_derivedFrom}}.hpp"
 
@@ -23,5 +25,7 @@ using {{NAME}} = Peripheral<{{baseAddress}}, {{attr_derivedFrom}}_>;
 using {{NAME}} = Peripheral<{{baseAddress}}, {{NAME}}_>;
 
 {% endif %}
+
+} // namespace Svd2cppObjects
 
 #endif  // _SVD_2_CPP_OBJECTS_{{NAME}}_INCLUDE_HPP_

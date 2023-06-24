@@ -6,9 +6,15 @@
 #include <iostream>
 
 #include "Types.hpp"
+namespace Svd2cppObjects
+{
+
+class PeripheralBase
+{
+};
 
 template<size_t offset, typename content>
-class Peripheral
+class Peripheral : PeripheralBase
 {
 
     content value;
@@ -33,5 +39,7 @@ public:
         return &value;
     }
 };
+
+}  // namespace Svd2cppObjects
 
 #endif  // _PERIPHERAL_INCLUDE_HPP_

@@ -8,11 +8,14 @@
 #include "Property.hpp"
 #include "Types.hpp"
 
+namespace Svd2cppObjects
+{
+
 template<size_t offset, typename content, REG_ADDR resetValue>
 class Register
 {
-    IO* ptr;
     content value;
+    IO* ptr;
 
 public:
     Register() = delete;
@@ -37,5 +40,7 @@ public:
         return &value;
     }
 };
+
+}  // namespace Svd2cppObjects
 
 #endif  // _REGISTER_INCLUDE_HPP_

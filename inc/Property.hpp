@@ -1,6 +1,9 @@
 #ifndef _PROPERTY_INCLUDE_HPP_
 #define _PROPERTY_INCLUDE_HPP_
 
+namespace Svd2cppObjects
+{
+
 template<typename T>
 class Property
 {
@@ -62,5 +65,7 @@ public:
         return &value;
     }
 };
+
+}  // namespace Svd2cppObjects
 
 #endif  // _PROPERTY_INCLUDE_HPP_

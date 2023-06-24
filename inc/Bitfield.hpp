@@ -21,6 +21,9 @@ constexpr auto ones(size_t width)
 }
 }
 
+namespace Svd2cppObjects
+{
+
 template<size_t offset, size_t width>
 class Bitfield
 {
@@ -130,5 +133,7 @@ public:
     }
 #endif  // TEST_HELPERS
 };
+
+}  // namespace Svd2cppObjects
 
 #endif  // __BITFIELD_H__

@@ -1,0 +1,23 @@
+#ifndef _SVD_2_CPP_OBJECTS_{{NAME}}_INCLUDE_HPP_
+#define _SVD_2_CPP_OBJECTS_{{NAME}}_INCLUDE_HPP_
+
+{% for peripheral in peripherals.peripheral %}
+#include "{{peripheral.name}}"
+{% endfor %}
+
+#include "Peripheral.hpp"
+#include "Types.hpp"
+
+namespace Svd2cppObjects {
+namespace {{NAME}} {
+
+void registerPeripherals() {
+{% for peripheral in peripherals.peripheral %}
+    Svd2cppObjects::registerPeripheral("{{peripheral.name}}", new Svd2cppObjects::{{peripheral.name}});
+{% endfor %}
+        }
+
+} // namespace {{NAME}}
+} // namespace Svd2cppObjects
+
+#endif  // _SVD_2_CPP_OBJECTS_{{NAME}}_INCLUDE_HPP_

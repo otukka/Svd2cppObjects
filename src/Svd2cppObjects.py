@@ -25,6 +25,22 @@ def peripheral(data, output):
         f.write(template.render(data))
 
 
+def factory(data, output):
+
+    data['NAME'] = str(data['name']).upper()
+
+    env = Environment(
+        loader=FileSystemLoader('src/templates'),
+        trim_blocks=True,
+        lstrip_blocks=True
+    )
+
+    template = env.get_template('factory.j2')
+
+    with open(Path.joinpath(output, data['name']+'.hpp'), 'w') as f:
+        f.write(template.render(data))
+
+
 def main(args):
 
     p = Path(args.filename)
@@ -32,7 +48,6 @@ def main(args):
 
     if not o.exists():
         o.mkdir()
-
 
     with open(p, 'r') as f:
         data = xmltodict.parse(f.read(), force_list={'field': {}, 'register': {}}, attr_prefix='attr_')
@@ -43,11 +58,9 @@ def main(args):
             json.dump(data, f)
 
     for perph in data['device']['peripherals']['peripheral']:
-        try:
-            peripheral(perph, o)
+        peripheral(perph, o)
 
-        except Exception as e:
-            print(e)
+    factory(data['device'], o)
 
 
 parser = argparse.ArgumentParser(description="")
