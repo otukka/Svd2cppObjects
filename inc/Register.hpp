@@ -8,15 +8,21 @@
 #include "Property.hpp"
 #include "Types.hpp"
 
-template<size_t offset, typename content>
+template<size_t offset, typename content, REG_ADDR resetValue>
 class Register
 {
+    IO* ptr;
     content value;
 
 public:
     Register() = delete;
-    explicit Register(REG_ADDR addr) : value{addr + offset} {};
+    explicit Register(REG_ADDR addr) : value{addr + offset}, ptr{reinterpret_cast<IO*>(addr + offset)} {};
     ~Register(){};
+
+    void reset()
+    {
+        *ptr = resetValue;
+    }
 
     void* operator new(size_t n, REG_ADDR addr)
     {

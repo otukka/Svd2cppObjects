@@ -39,3 +39,10 @@ auto rcc = RCC { 0 };
 rcc->reset()
 
 ```
+
+6. Declare bitwitdh in root project
+
+```
+cmake -DSYSTEM_BIT_WIDTH=<SYSTEM_32_BIT|SYSTEM_64_BIT> ..
+
+```

@@ -22,8 +22,8 @@ TEST_CASE("Basic peripheral init")
 
     struct peripheral1
     {
-        Register<0x16, register1> reg1;
-        Register<0x8, register1> reg2;
+        Register<0x16, register1, 0x0> reg1;
+        Register<0x8, register1, 0x0> reg2;
 
         peripheral1(REG_ADDR base) : reg1{base}, reg2{base} {};
     };

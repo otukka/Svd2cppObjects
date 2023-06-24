@@ -8,12 +8,19 @@ if [ ! -d $BUILD_DIR ]; then
     mkdir build
 fi
 
-# Init cmake if not init before
+# Init cmake if not init before. If fails will delete build-folder
 if [ "$(ls -A $BUILD_DIR)" ]; then
     cd build
 else
     cd build
-    cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=toolchains/i386-linux-gnu.cmake .. || cd .. && rm -rf build
+    
+    if cmake -DCMAKE_BUILD_TYPE=Debug -DBUILD_DRIVER=OFF -DBUILD_TESTS=ON -DCMAKE_TOOLCHAIN_FILE=toolchains/i386-linux-gnu.cmake .. ; then 
+        echo "success"
+    else
+        cd ..
+        rm -rf build
+        exit 1
+    fi
 fi
 
 make || exit 1

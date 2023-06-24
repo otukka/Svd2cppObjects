@@ -3,7 +3,7 @@ struct {{NAME}}_ {
 
 
 {% for register in registers.register %}
-    Register<{{register.addressOffset}}, {{register.name}}_> {{register.name}};
+    Register<{{register.addressOffset}}, {{register.name}}_, {{register.resetValue}}> {{register.name}};
 {% endfor %}
 
     {{NAME}}_(REG_ADDR base) : 
