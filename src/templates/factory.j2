@@ -5,17 +5,16 @@
 #include "{{peripheral.name}}"
 {% endfor %}
 
-#include "Peripheral.hpp"
-#include "Types.hpp"
+#include "PeripheralFactory.hpp"
 
 namespace Svd2cppObjects {
 namespace {{NAME}} {
 
 void registerPeripherals() {
 {% for peripheral in peripherals.peripheral %}
-    Svd2cppObjects::registerPeripheral("{{peripheral.name}}", new Svd2cppObjects::{{peripheral.name}});
+    Svd2cppObjects::PeripheralFactory::registerPeripheral("{{peripheral.name}}", new Svd2cppObjects::{{peripheral.name}});
 {% endfor %}
-        }
+}
 
 } // namespace {{NAME}}
 } // namespace Svd2cppObjects

@@ -1,6 +1,10 @@
 # Svd2cppObjects
 
+> NOTE!: Currently, this is untested proof-of-concept library. Do not use.
+
 ## Introduction
+
+TBD
 
 ## How To Use
 
