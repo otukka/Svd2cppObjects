@@ -1,8 +1,7 @@
 build/
 .vscode/
-run.sh
-install.sh
 env/
 out/
 SVDs/
 __pycache__/
+python/
