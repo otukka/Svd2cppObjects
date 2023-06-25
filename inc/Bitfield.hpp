@@ -24,7 +24,7 @@ constexpr auto ones(size_t width)
 namespace Svd2cppObjects
 {
 
-template<size_t offset, size_t width>
+template<REG_ADDR offset, REG_ADDR width>
 class Bitfield
 {
 private:

@@ -10,14 +10,17 @@
 namespace Svd2cppObjects {
 namespace {{NAME}} {
 
+{% for peripheral in peripherals.peripheral %}
+const std::string {{peripheral.NAME}}name{"{{peripheral.NAME}}"};
+{% endfor %}
+
+{% for peripheral in peripherals.peripheral %}
+static auto {{peripheral.NAME}}instance = {{peripheral.NAME}}peripheral::{{peripheral.NAME}}peripheral{0};
+{% endfor %}
+
 static void registerPeripherals() {
 {% for peripheral in peripherals.peripheral %}
-{% if attr_derivedFrom is not defined %}
-    const std::string {{peripheral.NAME}}_name{"{{peripheral.NAME}}"};
-    auto {{peripheral.NAME}}_ptr = new  (0) Svd2cppObjects::{{peripheral.NAME}}_n::{{peripheral.NAME}}_p{0}; 
-    Svd2cppObjects::PeripheralFactory::instance()->registerPeripheral({{peripheral.NAME}}_name, reinterpret_cast<Svd2cppObjects::{{peripheral.NAME}}_n::{{peripheral.NAME}}_p*>(&{{peripheral.NAME}}_ptr));
-{% endif %}
-
+    PeripheralFactory::instance()->registerPeripheral({{peripheral.NAME}}name, reinterpret_cast<{{peripheral.NAME}}peripheral::{{peripheral.NAME}}peripheral*>(&{{peripheral.NAME}}instance));
 {% endfor %}
 }
 

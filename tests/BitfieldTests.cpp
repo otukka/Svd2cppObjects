@@ -6,7 +6,7 @@
     REG_ADDR* p = new REG_ADDR;                                                                                        \
     *p = 0;                                                                                                            \
     auto base = reinterpret_cast<REG_ADDR>(p);                                                                         \
-    auto bits = Bitfield<offset, width>{base};
+    auto bits = Svd2cppObjects::Bitfield<offset, width>{base};
 
 TEST_CASE("Init 32-bits")
 {

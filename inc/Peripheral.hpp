@@ -13,7 +13,7 @@ class PeripheralBase
 {
 };
 
-template<size_t offset, typename content>
+template<REG_ADDR offset, typename content>
 class Peripheral : public PeripheralBase
 {
 

@@ -7,18 +7,17 @@
 #include "Register.hpp"
 #include "Peripheral.hpp"
 #include "Types.hpp"
-
-namespace Svd2cppObjects {
-namespace {{NAME}}_n {
-
-
 {% if attr_derivedFrom is defined %}
 #include "{{attr_derivedFrom}}.hpp"
+{% endif %}
 
+namespace Svd2cppObjects
+{
+namespace {{NAME}}peripheral
+{
 
-
-
-using {{NAME}}_p = Peripheral<{{baseAddress}}, Svd2cppObjects::{{attr_derivedFrom}}_n::{{attr_derivedFrom}}_p>;
+{% if attr_derivedFrom is defined %}
+using {{NAME}}peripheral = Peripheral<{{baseAddress}}, Svd2cppObjects::{{attr_derivedFrom}}peripheral::{{attr_derivedFrom}}peripheral>;
 {% else %}
 // Register definitions
 
@@ -27,11 +26,11 @@ using {{NAME}}_p = Peripheral<{{baseAddress}}, Svd2cppObjects::{{attr_derivedFro
 {% include 'register_struct.j2' %}
 
 
-using {{NAME}}_p = Peripheral<{{baseAddress}}, {{NAME}}_s>;
+using {{NAME}}peripheral = Peripheral<{{baseAddress}}, {{NAME}}register>;
 
 {% endif %}
 
-} // namespace {{NAME}}_n
+} // namespace {{NAME}}peripheral
 } // namespace Svd2cppObjects
 
 #endif  // _SVD_2_CPP_OBJECTS_{{NAME}}_INCLUDE_HPP_

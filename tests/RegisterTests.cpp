@@ -6,15 +6,60 @@
 #include "Register.hpp"
 #include "Types.hpp"
 
-struct register1
+namespace qwerty
 {
-    Bitfield<24, 8> byte1;
-    Bitfield<16, 8> byte2;
-    Bitfield<8, 8> byte3;
-    Bitfield<0, 8> byte4;
 
-    register1(REG_ADDR base) : byte1{base}, byte2{base}, byte3{base}, byte4{base} {}
+struct fghj
+{
+    int* b;
+
+    fghj() : b{new int} {};
 };
+
+template<typename T>
+class xyz
+{
+private:
+    T val;
+
+public:
+    T value()
+    {
+        return val;
+    }
+};
+}
+
+struct asdf
+{
+    qwerty::fghj a;
+
+    asdf() : a{} {};
+};
+
+TEST_CASE("test test")
+{
+    qwerty::xyz<asdf> obj{};
+
+    CHECK(*obj.value().a.b == 0);
+}
+
+namespace Svd2cppObjects
+{
+namespace MyRegister
+{
+
+    struct register1
+    {
+        Svd2cppObjects::Bitfield<24, 8> byte1;
+        Svd2cppObjects::Bitfield<16, 8> byte2;
+        Svd2cppObjects::Bitfield<8, 8> byte3;
+        Svd2cppObjects::Bitfield<0, 8> byte4;
+
+        register1(REG_ADDR base) : byte1{base}, byte2{base}, byte3{base}, byte4{base} {};
+    };
+}
+}
 
 TEST_CASE("Basic register init")
 {
@@ -26,8 +71,20 @@ TEST_CASE("Basic register init")
     const size_t offset{0x8};
     const size_t resetValue{0};
 
+    using RegisterType = Svd2cppObjects::Register<0x8, Svd2cppObjects::MyRegister::register1, resetValue>;
+
     auto addr = reinterpret_cast<REG_ADDR>(&arr->at(0));
-    auto reg = Register<offset, register1, resetValue>{addr};
+    auto reg = RegisterType{addr};
+
+    for (size_t i = 0; i < arr->size(); i++)
+    {
+        std::cout << "Addr: " << static_cast<void*>(&(*arr)[i]) << " Value: " << std::hex << static_cast<int>((*arr)[i])
+                  << "\n";
+    }
+
+    std::cout << "Addr" << static_cast<void*>(&reg) << std::endl;
+    std::cout << "Addr" << static_cast<void*>(&reg->byte1) << std::endl;
+    std::cout << "Addr" << reg->byte1.internaladdress() << std::endl;
 
     CHECK(reg->byte1.get() == 0x1);
     CHECK(reg->byte2.get() == 0x2);
@@ -62,7 +119,7 @@ TEST_CASE("Basic getter setter")
     const size_t resetValue{0};
 
     auto addr = reinterpret_cast<REG_ADDR>(&arr->at(2));
-    auto reg = Register<offset, register1, resetValue>{addr};
+    auto reg = Svd2cppObjects::Register<offset, Svd2cppObjects::MyRegister::register1, resetValue>{addr};
 
     reg->byte1 = 0x1;
     reg->byte2 = 0xFF;
@@ -92,7 +149,7 @@ TEST_CASE("reset")
     const size_t resetValue{0};
 
     auto addr = reinterpret_cast<REG_ADDR>(&arr->at(2));
-    auto reg = Register<offset, register1, resetValue>{addr};
+    auto reg = Svd2cppObjects::Register<offset, Svd2cppObjects::MyRegister::register1, resetValue>{addr};
 
     reg->byte1 = 0x1;
     reg->byte2 = 0xFF;

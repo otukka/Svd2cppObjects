@@ -7,7 +7,7 @@
 class MyClass
 {
 public:
-    Property<REG_ADDR> prop;
+    Svd2cppObjects::Property<REG_ADDR> prop;
     MyClass(){};
     ~MyClass(){};
 };
@@ -57,16 +57,16 @@ TEST_CASE("Function call operators")
 TEST_CASE("User defined conversions")
 {
     {
-        Property<REG_ADDR> a{};
+        Svd2cppObjects::Property<REG_ADDR> a{};
         REG_ADDR b = a;
         CHECK(b == a);
     }
     {
-        Property<REG_ADDR> a{};
+        Svd2cppObjects::Property<REG_ADDR> a{};
         // REG_ADDR *b = a;  // error
     }
     {
-        Property<REG_ADDR> a{};
+        Svd2cppObjects::Property<REG_ADDR> a{};
         REG_ADDR* b = static_cast<REG_ADDR*>(a);
         CHECK(*b == a);
     }

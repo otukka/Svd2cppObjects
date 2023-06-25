@@ -48,6 +48,7 @@ if(BUILD_TESTS)
     target_sources(tests PRIVATE
     tests/BitfieldTests.cpp
     tests/main.cpp
+    tests/PeripheralFactoryTests.cpp
     tests/PeripheralTests.cpp
     tests/PropertyTests.cpp
     tests/RegisterTests.cpp

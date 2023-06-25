@@ -29,22 +29,28 @@ target_link_libraries(<target> PRIVATE Svd2cppObjects)
 
 ```
 
-4. In your project file where you need this library include it for example
+4. In your project main file iclude PeripheralFactory
 
 ```
-#include "RCC.hpp"
+#include "PeripheralFactory.hpp"
 
 ```
 
-5. Use the driver in your code
+5. Initialize peripheral objects in your main function
 
 ```
-auto rcc = RCC { 0 };
+Svd2cppObjects::<target-platform>::registerPeripherals();
+
+```
+
+6. Example how to use RCC in stm32 platform
+
+```
+auto rcc = *Svd2cppObjects::PeripheralFactory::instance()->create<RNGperipheral::RNGperipheral>(RCCname);
 rcc->reset()
-
 ```
 
-6. Declare bitwitdh in root project
+7. Declare bitwitdh in root project
 
 ```
 cmake -DSYSTEM_BIT_WIDTH=<SYSTEM_32_BIT|SYSTEM_64_BIT> ..

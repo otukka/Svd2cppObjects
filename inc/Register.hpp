@@ -11,7 +11,7 @@
 namespace Svd2cppObjects
 {
 
-template<size_t offset, typename content, REG_ADDR resetValue>
+template<REG_ADDR offset, typename content, REG_ADDR resetValue>
 class Register
 {
     content value;
@@ -19,7 +19,10 @@ class Register
 
 public:
     Register() = delete;
-    explicit Register(REG_ADDR addr) : value{addr + offset}, ptr{reinterpret_cast<IO*>(addr + offset)} {};
+    explicit Register(REG_ADDR addr) : value{addr + offset}, ptr{reinterpret_cast<IO*>(addr + offset)}
+    {
+        std::cout << "Register init" << std::endl;
+    };
     ~Register(){};
 
     void reset()

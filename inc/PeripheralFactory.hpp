@@ -1,5 +1,5 @@
-#ifndef __PERIPHERALFACTORY_H__
-#define __PERIPHERALFACTORY_H__
+#ifndef _SVD_2_CPP_OBJECTS_PERIPHERAL_FACTORY_INCLUDE_HPP_
+#define _SVD_2_CPP_OBJECTS_PERIPHERAL_FACTORY_INCLUDE_HPP_
 
 #include <string>
 #include <unordered_map>
@@ -27,20 +27,19 @@ public:
         return instance_;
     }
 
-    PeripheralBase* create(std::string name)
+    template<typename T>
+    T* create(std::string name)
     {
         if (peripherals.find(name) != peripherals.end())
         {
-            return instance_->peripherals[name];
+            return reinterpret_cast<T*>(instance()->peripherals[name]);
         }
-        return static_cast<PeripheralBase*>(nullptr);
+        return static_cast<T*>(nullptr);
     }
 
     void registerPeripheral(const std::string& name, PeripheralBase* peripheral)
     {
         instance()->peripherals[name] = peripheral;
-        // peripherals.insert(std::make_pair<std::string, PeripheralBase*>(std::string(name), new PeripheralBase));
-        // peripherals.at(name) = peripheral;
     }
 };
 
@@ -48,4 +47,4 @@ static PeripheralFactory* instance_;
 
 }  // namespace Svd2cppObjects
 
-#endif  // __PERIPHERALFACTORY_H__
+#endif  // _SVD_2_CPP_OBJECTS_PERIPHERAL_FACTORY_INCLUDE_HPP_
