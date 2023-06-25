@@ -17,17 +17,14 @@ namespace {{NAME}}peripheral
 {
 
 {% if attr_derivedFrom is defined %}
-using {{NAME}}peripheral = Peripheral<{{baseAddress}}, Svd2cppObjects::{{attr_derivedFrom}}peripheral::{{attr_derivedFrom}}peripheral>;
+
+using {{NAME}}peripheral = Peripheral<{{baseAddress}}, {{attr_derivedFrom}}peripheral::{{attr_derivedFrom}}register>;
 {% else %}
-// Register definitions
-
 {% include 'bitfields_struct.j2' %}
-
 {% include 'register_struct.j2' %}
 
 
 using {{NAME}}peripheral = Peripheral<{{baseAddress}}, {{NAME}}register>;
-
 {% endif %}
 
 } // namespace {{NAME}}peripheral

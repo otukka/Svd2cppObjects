@@ -43,8 +43,6 @@ public:
     }
 };
 
-static PeripheralFactory* instance_;
-
 }  // namespace Svd2cppObjects
 
 #endif  // _SVD_2_CPP_OBJECTS_PERIPHERAL_FACTORY_INCLUDE_HPP_
