@@ -2,7 +2,7 @@
 #define _SVD_2_CPP_OBJECTS_{{NAME}}_INCLUDE_HPP_
 
 {% for peripheral in peripherals.peripheral %}
-#include "{{peripheral.name}}"
+#include "{{peripheral.name}}.hpp"
 {% endfor %}
 
 #include "PeripheralFactory.hpp"
@@ -10,9 +10,14 @@
 namespace Svd2cppObjects {
 namespace {{NAME}} {
 
-void registerPeripherals() {
+static void registerPeripherals() {
 {% for peripheral in peripherals.peripheral %}
-    Svd2cppObjects::PeripheralFactory::registerPeripheral("{{peripheral.name}}", new Svd2cppObjects::{{peripheral.name}});
+{% if attr_derivedFrom is not defined %}
+    const std::string {{peripheral.NAME}}_name{"{{peripheral.NAME}}"};
+    auto {{peripheral.NAME}}_ptr = new  (0) Svd2cppObjects::{{peripheral.NAME}}_n::{{peripheral.NAME}}_p{0}; 
+    Svd2cppObjects::PeripheralFactory::instance()->registerPeripheral({{peripheral.NAME}}_name, reinterpret_cast<Svd2cppObjects::{{peripheral.NAME}}_n::{{peripheral.NAME}}_p*>(&{{peripheral.NAME}}_ptr));
+{% endif %}
+
 {% endfor %}
 }
 

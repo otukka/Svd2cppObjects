@@ -9,11 +9,16 @@
 #include "Types.hpp"
 
 namespace Svd2cppObjects {
+namespace {{NAME}}_n {
+
 
 {% if attr_derivedFrom is defined %}
 #include "{{attr_derivedFrom}}.hpp"
 
-using {{NAME}} = Peripheral<{{baseAddress}}, {{attr_derivedFrom}}_>;
+
+
+
+using {{NAME}}_p = Peripheral<{{baseAddress}}, Svd2cppObjects::{{attr_derivedFrom}}_n::{{attr_derivedFrom}}_p>;
 {% else %}
 // Register definitions
 
@@ -22,10 +27,11 @@ using {{NAME}} = Peripheral<{{baseAddress}}, {{attr_derivedFrom}}_>;
 {% include 'register_struct.j2' %}
 
 
-using {{NAME}} = Peripheral<{{baseAddress}}, {{NAME}}_>;
+using {{NAME}}_p = Peripheral<{{baseAddress}}, {{NAME}}_s>;
 
 {% endif %}
 
+} // namespace {{NAME}}_n
 } // namespace Svd2cppObjects
 
 #endif  // _SVD_2_CPP_OBJECTS_{{NAME}}_INCLUDE_HPP_

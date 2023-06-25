@@ -1,14 +1,14 @@
 
-struct {{NAME}}_ {
+struct {{NAME}}_s {
 
 
 {% for register in registers.register %}
-    Register<{{register.addressOffset}}, {{register.name}}_, {{register.resetValue}}> {{register.name}};
+    Register<{{register.addressOffset}}, {{register.name}}_s, {{register.resetValue}}> {{register.name}}_r;
 {% endfor %}
 
-    {{NAME}}_(REG_ADDR base) : 
+    {{NAME}}_s(REG_ADDR base) : 
 {% for register in registers.register %}
-        {{register.name}}{base}
+        {{register.name}}_r{base}
 {%- if not loop.last %}
 ,
 {% else %}

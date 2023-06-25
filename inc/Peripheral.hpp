@@ -14,7 +14,7 @@ class PeripheralBase
 };
 
 template<size_t offset, typename content>
-class Peripheral : PeripheralBase
+class Peripheral : public PeripheralBase
 {
 
     content value;
@@ -26,7 +26,8 @@ public:
 
     void* operator new(size_t n, REG_ADDR addr)
     {
-        return reinterpret_cast<void*>(addr);
+        (void*)n;
+        return reinterpret_cast<void*>(addr + offset);
     }
 
     // Memory mapped IO, don't do anything here
