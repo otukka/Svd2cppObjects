@@ -1,7 +1,16 @@
+
 struct {{NAME}}register {
 
 {% for register in registers.register %}
-    Register<{{register.addressOffset}}, {{register.name}}register, {{register.resetValue}}> {{register.name}}_;
+{% if attr_derivedFrom is not defined %}
+    /// @brief {{register.description | replace("\n", " ")}}
+{% if groupName != NAME %}
+    Register<{{register.addressOffset}}, {{NAME}}_namespace::{{register.name}}register, {{register.resetValue}}> {{register.name}}_;
+{% else %}
+    Register<{{register.addressOffset}}, {{NAME}}::{{register.name}}register, {{register.resetValue}}> {{register.name}}_;
+{% endif %}
+{% endif %}
+
 {% endfor %}
 
     {{NAME}}register(REG_ADDR base) : 

@@ -75,6 +75,11 @@ def main(args):
             json.dump(data, f)
 
     for perph in data['device']['peripherals']['peripheral']:
+        if ('attr_derivedFrom' in perph):
+            
+            perph['groupName'] = list(filter(lambda x: x['name'] == perph['attr_derivedFrom'], data['device']['peripherals']['peripheral']))[0]['groupName']
+        if perph['name'] == 'GPIOH':
+            print(perph)
         peripheral(perph, o)
 
     factory(data['device'], o)

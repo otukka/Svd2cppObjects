@@ -6,11 +6,12 @@
 
 TBD
 
-## How To Use
+## Requirements
+Python needs virtualenv to be installed.
 
-This driver can be included in your project in few simple steps.
+## Usage
 
-1. Add this project as submodule to your root project
+1. Add this project as submodule to your project at root directory
 
 ```
 git submodule add git@github.com:otukka/Svd2cppObjects.git
@@ -22,7 +23,7 @@ git submodule add git@github.com:otukka/Svd2cppObjects.git
 add_subdirectory(Svd2cppObjects)
 ```
 
-3. Add Svd2cppObjects to target
+3. In `CMakeLists.txt` add Svd2cppObjects to some target
 
 ```
 target_link_libraries(<target> PRIVATE Svd2cppObjects)
@@ -50,7 +51,7 @@ auto rcc = *Svd2cppObjects::PeripheralFactory::instance()->create<RNGperipheral:
 rcc->reset()
 ```
 
-7. Declare bitwitdh in root project
+7. Declare bitwidth in root project
 
 ```
 cmake -DSYSTEM_BIT_WIDTH=<SYSTEM_32_BIT|SYSTEM_64_BIT> ..
