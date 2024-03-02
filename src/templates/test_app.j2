@@ -15,8 +15,8 @@ int main(void)
 
     auto gpiog = *PeripheralFactory::instance()->derived<GPIO::GPIOG>(PeripheralFactory::GPIOG);
 
-    gpiog->ODR_->ODR6_.get();
-    gpiog->ODR_->ODR6_.set();
+    gpiog->ODR->ODR6.get();
+    gpiog->ODR->ODR6.set();
 
     return 0;
 }

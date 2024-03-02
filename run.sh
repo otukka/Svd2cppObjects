@@ -21,9 +21,11 @@ export PYTHONPATH=$ROOT_DIR:$PYTHONPATH
 # Environment
 source ${ROOT_DIR}/env/bin/activate
 
+rm -rf out/*
+
 cd ${ROOT_DIR} && python ${ROOT_DIR}/src/Svd2cppObjects.py $1 $2
 
 deactivate
 
 # Sanity check app
-g++ -Iout -Iinc -m32 -g -Wall -Wpedantic -Wconversion -Werror out/test_app.cpp -o out/test
+g++ -Iout -Iinc -m32 -g -Wall -Wpedantic -Wconversion -Werror out/test_app.cpp -o out/test_app

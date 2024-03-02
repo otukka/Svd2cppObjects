@@ -1,0 +1,25 @@
+
+        struct {{NAME}}peripheral {
+
+{% for register in registers.register %}
+{% if attr_derivedFrom is not defined %}
+            /// @brief {{register.description | replace("\n", " ")}}
+{% if groupName != NAME %}
+            Register<{{register.addressOffset}}, {{NAME}}_namespace::{{register.name}}register, {{register.resetValue}}> {{register.name}};
+{% else %}
+            Register<{{register.addressOffset}}, {{NAME}}::{{register.name}}register, {{register.resetValue}}> {{register.name}};
+{% endif %}
+{% endif %}
+
+{% endfor %}
+
+            {{NAME}}peripheral(REG_ADDR base) : 
+{% for register in registers.register %}
+                {{register.name}}{base}
+{%- if not loop.last %}
+,
+{% else %}
+ {};
+{% endif %}
+{% endfor %}
+        };
