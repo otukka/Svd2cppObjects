@@ -13,21 +13,50 @@
 
 namespace Svd2cppObjects
 {
-namespace {{NAME}}peripheral
+namespace {{groupName}}
 {
+
+
+
+{% if attr_derivedFrom is not defined %}
+{% if groupName != NAME %}
+namespace {{NAME}}_namespace
+{
+{% endif %}
+{% endif %}
+
+
 
 {% if attr_derivedFrom is defined %}
 
-using {{NAME}}peripheral = Peripheral<{{baseAddress}}, {{attr_derivedFrom}}peripheral::{{attr_derivedFrom}}register>;
+
+using {{NAME}} = Peripheral<{{baseAddress}}, {{attr_derivedFrom}}register>;
 {% else %}
+
 {% include 'bitfields_struct.j2' %}
+{% if groupName != NAME %}
+}// namespace {{NAME}}_namespace
+{% endif %}
+
 {% include 'register_struct.j2' %}
 
 
-using {{NAME}}peripheral = Peripheral<{{baseAddress}}, {{NAME}}register>;
+/// @brief {{description | replace("\n", " ")}}
+{% if groupName != NAME %}
+using {{NAME}} = Peripheral<{{baseAddress}}, {{NAME}}register>;
+{% else %}
+{% if attr_derivedFrom is defined %}
+using {{NAME}} = Peripheral<{{baseAddress}}, {{attr_derivedFrom}}register>;
+{% else %}
+using {{NAME}} = Peripheral<{{baseAddress}}, {{NAME}}register>;
 {% endif %}
 
-} // namespace {{NAME}}peripheral
+{% endif %}
+
+{% endif %}
+
+
+} // namespace {{groupName}}
 } // namespace Svd2cppObjects
 
 #endif  // _SVD_2_CPP_OBJECTS_{{NAME}}_INCLUDE_HPP_

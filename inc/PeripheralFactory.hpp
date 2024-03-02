@@ -37,9 +37,9 @@ public:
         return static_cast<T*>(nullptr);
     }
 
-    void registerPeripheral(const std::string& name, PeripheralBase* peripheral)
+    void registerPeripheral(const std::string& name, PeripheralBase&& peripheral)
     {
-        instance()->peripherals[name] = peripheral;
+        instance()->peripherals[name] = std::move(peripheral);
     }
 };
 

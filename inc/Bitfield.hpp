@@ -90,6 +90,12 @@ public:
         return &get();
     }
 
+    void set()
+    {
+        clear();
+        merge(ones(width));
+    }
+
     void set(REG_ADDR newValue)
     {
         if (newValue <= ones(width))

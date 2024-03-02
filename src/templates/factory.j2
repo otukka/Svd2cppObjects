@@ -1,29 +1,96 @@
 #ifndef _SVD_2_CPP_OBJECTS_{{NAME}}_INCLUDE_HPP_
 #define _SVD_2_CPP_OBJECTS_{{NAME}}_INCLUDE_HPP_
 
-{% for peripheral in peripherals.peripheral %}
+{% for peripheral in peripherals.peripheral -%} 
 #include "{{peripheral.name}}.hpp"
-{% endfor %}
+{% endfor %} 
 
-#include "PeripheralFactory.hpp"
+#include <unordered_map>
 
-namespace Svd2cppObjects {
-namespace {{NAME}} {
 
+#include "Peripheral.hpp" 
+ 
+namespace Svd2cppObjects { 
+namespace {{NAME}} { 
+
+class PeripheralFactory
+{
+
+public:
+    enum PERIPHERAL
+    {
 {% for peripheral in peripherals.peripheral %}
-const std::string {{peripheral.NAME}}name{"{{peripheral.NAME}}"};
-{% endfor %}
+        {{peripheral.NAME}}
+{%- if not loop.last %}
+,
+{% else %}
 
+{% endif %}
+{% endfor %}
+    };
+
+private:
+    static PeripheralFactory* instance_;
+    std::unordered_map<PERIPHERAL, Svd2cppObjects::PeripheralBase*> peripherals;
+
+    PeripheralFactory(){};
+    ~PeripheralFactory(){};
+
+public:
+    static PeripheralFactory* instance()
+    {
+        if (instance_ == nullptr)
+        {
+            instance_ = new PeripheralFactory();
+        }
+        return instance_;
+    }
+
+    template<typename T>
+    T* derived(const PERIPHERAL& name)
+    {
+        if (peripherals.find(name) != peripherals.end())
+        {
+            return reinterpret_cast<T*>(instance()->peripherals[name]);
+        }
+        return static_cast<T*>(nullptr);
+    }
+
+    PeripheralBase* base(const PERIPHERAL& name)
+    {
+        if (peripherals.find(name) != peripherals.end())
+        {
+            return instance()->peripherals[name];
+        }
+        return nullptr;
+    }
+
+    void registerPeripheral(const PERIPHERAL& name, PeripheralBase* peripheral)
+    {
+        instance()->peripherals[name] = peripheral;
+    }
+
+
+
+private:
 {% for peripheral in peripherals.peripheral %}
-static auto {{peripheral.NAME}}instance = {{peripheral.NAME}}peripheral::{{peripheral.NAME}}peripheral{0};
+    static PeripheralBase* {{peripheral.NAME}}_()
+    {
+       return new (0) {{peripheral.groupName}}::{{peripheral.NAME}}(0);
+    }
 {% endfor %}
 
-static void registerPeripherals() {
+
+public:
+    static void registerPeripherals()
+    {
 {% for peripheral in peripherals.peripheral %}
-    PeripheralFactory::instance()->registerPeripheral({{peripheral.NAME}}name, reinterpret_cast<{{peripheral.NAME}}peripheral::{{peripheral.NAME}}peripheral*>(&{{peripheral.NAME}}instance));
+    {# PeripheralFactory::instance()->registerPeripheral({{peripheral.NAME}}_, reinterpret_cast<{{peripheral.groupName}}::{{peripheral.NAME}}*>(&{{peripheral.NAME}}__)); #}
+        instance()->registerPeripheral(PeripheralFactory::PERIPHERAL::{{peripheral.NAME}}, PeripheralFactory::{{peripheral.NAME}}_());
 {% endfor %}
-}
+    }
 
+}; // class PeripheralFactory
 } // namespace {{NAME}}
 } // namespace Svd2cppObjects
 
