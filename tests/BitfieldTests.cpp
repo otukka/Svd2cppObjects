@@ -14,7 +14,7 @@ TEST_CASE("Init 32-bits")
     {
         INIT_BITS(0, 32);
         CHECK(bits.get() == 0);
-        CHECK(bits.internal() == 0);
+        CHECK(bits.internalValue() == 0);
     }
 
     // Init zero
@@ -22,7 +22,7 @@ TEST_CASE("Init 32-bits")
         INIT_BITS(0, 32);
         bits = 0;
         CHECK(bits.get() == 0);
-        CHECK(bits.internal() == 0);
+        CHECK(bits.internalValue() == 0);
     }
 
     // Init one
@@ -30,7 +30,7 @@ TEST_CASE("Init 32-bits")
         INIT_BITS(0, 32);
         bits = 1;
         CHECK(bits.get() == 1);
-        CHECK(bits.internal() == 1);
+        CHECK(bits.internalValue() == 1);
     }
 
     // Init nearly full
@@ -38,7 +38,7 @@ TEST_CASE("Init 32-bits")
         INIT_BITS(0, 32);
         bits = 0x7FFFFFFF;
         CHECK(bits.get() == 0x7FFFFFFF);
-        CHECK(bits.internal() == 0x7FFFFFFF);
+        CHECK(bits.internalValue() == 0x7FFFFFFF);
     }
 
     // Init full
@@ -46,7 +46,7 @@ TEST_CASE("Init 32-bits")
         INIT_BITS(0, 32);
         bits = 0xFFFFFFFF;
         CHECK(bits.get() == 0xFFFFFFFF);
-        CHECK(bits.internal() == 0xFFFFFFFF);
+        CHECK(bits.internalValue() == 0xFFFFFFFF);
     }
 
     // Init with random value
@@ -54,7 +54,7 @@ TEST_CASE("Init 32-bits")
         INIT_BITS(0, 32);
         bits = 4321;
         CHECK(bits.get() == 4321);
-        CHECK(bits.internal() == 4321);
+        CHECK(bits.internalValue() == 4321);
     }
 }
 
@@ -65,7 +65,7 @@ TEST_CASE("Init 4-bits")
         INIT_BITS(0, 4);
         bits = 0xF;
         CHECK(bits.get() == 0xF);
-        CHECK(bits.internal() == 0xF);
+        CHECK(bits.internalValue() == 0xF);
     }
 
     // Init with one value half-byte offset
@@ -73,14 +73,14 @@ TEST_CASE("Init 4-bits")
         INIT_BITS(4, 4);
         bits.set(0x1);
         CHECK(bits.get() == 0x1);
-        CHECK(bits.internal() == 0x10);
+        CHECK(bits.internalValue() == 0x10);
     }
     // Init with full value half-byte offset
     {
         INIT_BITS(4, 4);
         bits.set(0xF);
         CHECK(bits.get() == 0xF);
-        CHECK(bits.internal() == 0xF0);
+        CHECK(bits.internalValue() == 0xF0);
     }
 }
 
@@ -106,7 +106,7 @@ TEST_CASE("Init 8-bits")
         INIT_BITS(0, 8);
         bits = 0xA5;
         CHECK(bits.get() == 0xA5);
-        CHECK(bits.internal() == 0xA5);
+        CHECK(bits.internalValue() == 0xA5);
     }
 }
 
@@ -118,14 +118,14 @@ TEST_CASE("Set")
         bits = 1;
         bits.set(0);
         CHECK(bits.get() == 0);
-        CHECK(bits.internal() == 0);
+        CHECK(bits.internalValue() == 0);
     }
     // Set one
     {
         INIT_BITS(0, 32);
         bits.set(1);
         CHECK(bits.get() == 1);
-        CHECK(bits.internal() == 1);
+        CHECK(bits.internalValue() == 1);
     }
 
     // Set larger
@@ -140,7 +140,7 @@ TEST_CASE("Set")
         INIT_BITS(0, 1);
         bits.set(1);
         CHECK(bits.get() == 1);
-        CHECK(bits.internal() == 1);
+        CHECK(bits.internalValue() == 1);
     }
 
     // Set one with offset
@@ -148,7 +148,7 @@ TEST_CASE("Set")
         INIT_BITS(1, 1);
         bits.set(1);
         CHECK(bits.get() == 1);
-        CHECK(bits.internal() == 2);
+        CHECK(bits.internalValue() == 2);
     }
 
     // Set one with offset
@@ -156,7 +156,7 @@ TEST_CASE("Set")
         INIT_BITS(2, 1);
         bits.set(1);
         CHECK(bits.get() == 1);
-        CHECK(bits.internal() == 4);
+        CHECK(bits.internalValue() == 4);
     }
 }
 
@@ -167,7 +167,7 @@ TEST_CASE("Set with overflowing value")
         INIT_BITS(0, 2);
         bits.set(5);
         CHECK(bits.get() == 0);
-        CHECK(bits.internal() == 0);
+        CHECK(bits.internalValue() == 0);
     }
 
     // 2-bits 24-bit offset
@@ -175,7 +175,7 @@ TEST_CASE("Set with overflowing value")
         INIT_BITS(24, 2);
         bits.set(0xFF);
         CHECK(bits.get() == 0);
-        CHECK(bits.internal() == 0);
+        CHECK(bits.internalValue() == 0);
     }
 
     // 2-bits preserve original
@@ -184,7 +184,7 @@ TEST_CASE("Set with overflowing value")
         bits.set(3);
         bits.set(5);
         CHECK(bits.get() == 3);
-        CHECK(bits.internal() == 3);
+        CHECK(bits.internalValue() == 3);
     }
 
     // 2-bits preserve original offset
@@ -193,7 +193,7 @@ TEST_CASE("Set with overflowing value")
         bits.set(3);
         bits.set(5);
         CHECK(bits.get() == 3);
-        CHECK(bits.internal() == 96);
+        CHECK(bits.internalValue() == 96);
     }
 }
 
@@ -206,7 +206,7 @@ TEST_CASE("Clear")
         CHECK(bits.get() == 0xA5A5A5A5);
         bits.clear();
         CHECK(bits.get() == 0);
-        CHECK(bits.internal() == 0);
+        CHECK(bits.internalValue() == 0);
     }
 
     // Clear empty
@@ -215,7 +215,7 @@ TEST_CASE("Clear")
         CHECK(bits.get() == 0);
         bits.clear();
         CHECK(bits.get() == 0);
-        CHECK(bits.internal() == 0);
+        CHECK(bits.internalValue() == 0);
     }
 
     // Clear zero
@@ -225,7 +225,7 @@ TEST_CASE("Clear")
         CHECK(bits.get() == 0);
         bits.clear();
         CHECK(bits.get() == 0);
-        CHECK(bits.internal() == 0);
+        CHECK(bits.internalValue() == 0);
     }
 
     // Clear first byte
@@ -234,7 +234,7 @@ TEST_CASE("Clear")
         bits = 0xFF;
         bits.clear();
         CHECK(bits.get() == 0);
-        CHECK(bits.internal() == 0x00);
+        CHECK(bits.internalValue() == 0x00);
     }
     // Clear second byte
     {
@@ -242,7 +242,7 @@ TEST_CASE("Clear")
         bits = 0xFF;
         bits.clear();
         CHECK(bits.get() == 0);
-        CHECK(bits.internal() == 0x00);
+        CHECK(bits.internalValue() == 0x00);
     }
     // Clear third byte
     {
@@ -250,7 +250,7 @@ TEST_CASE("Clear")
         bits = 0xFF;
         bits.clear();
         CHECK(bits.get() == 0);
-        CHECK(bits.internal() == 0x00);
+        CHECK(bits.internalValue() == 0x00);
     }
     // Clear last byte
     {
@@ -258,7 +258,7 @@ TEST_CASE("Clear")
         bits = 0xFF;
         bits.clear();
         CHECK(bits.get() == 0);
-        CHECK(bits.internal() == 0x00);
+        CHECK(bits.internalValue() == 0x00);
     }
 
     // Clear half-byte
@@ -267,7 +267,7 @@ TEST_CASE("Clear")
         bits = 0xF;
         bits.clear();
         CHECK(bits.get() == 0);
-        CHECK(bits.internal() == 0x0);
+        CHECK(bits.internalValue() == 0x0);
     }
     // Clear half-byte
     {
@@ -275,7 +275,7 @@ TEST_CASE("Clear")
         bits = 0xF;
         bits.clear();
         CHECK(bits.get() == 0);
-        CHECK(bits.internal() == 0x0);
+        CHECK(bits.internalValue() == 0x0);
     }
 }
 
@@ -286,14 +286,14 @@ TEST_CASE("Merge")
         INIT_BITS(0, 32);
         bits.merge(0x50A0);
         CHECK(bits.get() == 0x50A0);
-        CHECK(bits.internal() == 0x50A0);
+        CHECK(bits.internalValue() == 0x50A0);
     }
     // Merge empty to empty
     {
         INIT_BITS(0, 32);
         bits.merge(0x0);
         CHECK(bits.get() == 0x0);
-        CHECK(bits.internal() == 0x0);
+        CHECK(bits.internalValue() == 0x0);
     }
 
     // Merge As and 5s
@@ -302,7 +302,7 @@ TEST_CASE("Merge")
         bits = 0xA050;
         bits.merge(0x50A0);
         CHECK(bits.get() == 0xF0F0);
-        CHECK(bits.internal() == 0xF0F0);
+        CHECK(bits.internalValue() == 0xF0F0);
     }
 
     // Merge half-byte
@@ -310,7 +310,7 @@ TEST_CASE("Merge")
         INIT_BITS(0, 4);
         bits.merge(0xA);
         CHECK(bits.get() == 0xA);
-        CHECK(bits.internal() == 0x0A);
+        CHECK(bits.internalValue() == 0x0A);
     }
 
     // Merge half-byte
@@ -318,7 +318,7 @@ TEST_CASE("Merge")
         INIT_BITS(4, 4);
         bits.merge(0xA);
         CHECK(bits.get() == 0xA);
-        CHECK(bits.internal() == 0xA0);
+        CHECK(bits.internalValue() == 0xA0);
     }
 }
 
@@ -330,7 +330,7 @@ TEST_CASE("Flip")
         bits = 0xAAAAAAAA;
         bits.flip();
         CHECK(bits.get() == 0x55555555);
-        CHECK(bits.internal() == 0x55555555);
+        CHECK(bits.internalValue() == 0x55555555);
     }
 
     // Flip first byte
@@ -339,7 +339,7 @@ TEST_CASE("Flip")
         bits = 0xAA;
         bits.flip();
         CHECK(bits.get() == 0x55);
-        CHECK(bits.internal() == 0x00000055);
+        CHECK(bits.internalValue() == 0x00000055);
     }
     // Flip second byte
     {
@@ -347,7 +347,7 @@ TEST_CASE("Flip")
         bits = 0xAA;
         bits.flip();
         CHECK(bits.get() == 0x55);
-        CHECK(bits.internal() == 0x00005500);
+        CHECK(bits.internalValue() == 0x00005500);
     }
     // Flip third byte
     {
@@ -355,7 +355,7 @@ TEST_CASE("Flip")
         bits = 0xAA;
         bits.flip();
         CHECK(bits.get() == 0x55);
-        CHECK(bits.internal() == 0x00550000);
+        CHECK(bits.internalValue() == 0x00550000);
     }
     // Flip last byte
     {
@@ -363,6 +363,6 @@ TEST_CASE("Flip")
         bits = 0xAA;
         bits.flip();
         CHECK(bits.get() == 0x55);
-        CHECK(bits.internal() == 0x55000000);
+        CHECK(bits.internalValue() == 0x55000000);
     }
 }
