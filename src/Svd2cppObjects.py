@@ -51,9 +51,9 @@ def test_app(data, output):
         lstrip_blocks=True
     )
 
-    template = env.get_template('test.j2')
+    template = env.get_template('test_app.j2')
 
-    with open(Path.joinpath(output, 'test.cpp'), 'w') as f:
+    with open(Path.joinpath(output, 'test_app.cpp'), 'w') as f:
         f.write(template.render(data))
 
 
@@ -76,10 +76,10 @@ def main(args):
 
     for perph in data['device']['peripherals']['peripheral']:
         if ('attr_derivedFrom' in perph):
-            
-            perph['groupName'] = list(filter(lambda x: x['name'] == perph['attr_derivedFrom'], data['device']['peripherals']['peripheral']))[0]['groupName']
-        if perph['name'] == 'GPIOH':
-            print(perph)
+
+            perph['groupName'] = list(filter(lambda x: x['name'] == perph['attr_derivedFrom'],
+                                      data['device']['peripherals']['peripheral']))[0]['groupName']
+
         peripheral(perph, o)
 
     factory(data['device'], o)

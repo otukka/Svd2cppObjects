@@ -85,6 +85,11 @@ namespace Svd2cppObjects
             return &get();
         }
 
+        void set()
+        {
+            merge(ones(width));
+        }
+
         void set(REG_ADDR newValue)
         {
             if (newValue <= ones(width))

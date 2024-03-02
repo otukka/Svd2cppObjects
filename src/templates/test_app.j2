@@ -9,10 +9,14 @@ PeripheralFactory* PeripheralFactory::instance_ = nullptr;
 
 int main(void)
 {
-    registerPeripherals();
 
     auto factory = PeripheralFactory::instance();
-    (void)factory;
+    factory->registerPeripherals();
+
+    auto gpiog = *PeripheralFactory::instance()->derived<GPIO::GPIOG>(PeripheralFactory::GPIOG);
+
+    gpiog->ODR_->ODR6_.get();
+    gpiog->ODR_->ODR6_.set();
 
     return 0;
 }
