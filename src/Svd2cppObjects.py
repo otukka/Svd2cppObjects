@@ -41,6 +41,22 @@ def factory(data, output):
         f.write(template.render(data))
 
 
+def test_app(data, output):
+
+    data['NAME'] = str(data['name']).upper()
+
+    env = Environment(
+        loader=FileSystemLoader('src/templates'),
+        trim_blocks=True,
+        lstrip_blocks=True
+    )
+
+    template = env.get_template('test.j2')
+
+    with open(Path.joinpath(output, 'test.cpp'), 'w') as f:
+        f.write(template.render(data))
+
+
 def main(args):
 
     p = Path(args.filename)
@@ -50,7 +66,8 @@ def main(args):
         o.mkdir()
 
     with open(p, 'r') as f:
-        data = xmltodict.parse(f.read(), force_list={'field': {}, 'register': {}}, attr_prefix='attr_')
+        data = xmltodict.parse(f.read(), force_list={
+                               'field': {}, 'register': {}}, attr_prefix='attr_')
 
     if args.debug == True:
 
@@ -61,6 +78,8 @@ def main(args):
         peripheral(perph, o)
 
     factory(data['device'], o)
+
+    test_app(data['device'], o)
 
 
 parser = argparse.ArgumentParser(description="")

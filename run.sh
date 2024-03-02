@@ -24,3 +24,5 @@ source ${ROOT_DIR}/env/bin/activate
 cd ${ROOT_DIR} && python ${ROOT_DIR}/src/Svd2cppObjects.py $1 $2
 
 deactivate
+
+g++ -Iout -Iinc -m32 -g -Wall -Wpedantic -Wconversion -Werror out/test.cpp -o out/test 

@@ -1,0 +1,18 @@
+
+
+#include "{{NAME}}.hpp"
+
+using namespace Svd2cppObjects;
+using namespace Svd2cppObjects::{{NAME}};
+
+PeripheralFactory* PeripheralFactory::instance_ = nullptr;
+
+int main(void)
+{
+    registerPeripherals();
+
+    auto factory = PeripheralFactory::instance();
+    (void)factory;
+
+    return 0;
+}
