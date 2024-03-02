@@ -6,59 +6,21 @@
 #include "Register.hpp"
 #include "Types.hpp"
 
-namespace qwerty
-{
-
-struct fghj
-{
-    int* b;
-
-    fghj() : b{new int} {};
-};
-
-template<typename T>
-class xyz
-{
-private:
-    T val;
-
-public:
-    T value()
-    {
-        return val;
-    }
-};
-}
-
-struct asdf
-{
-    qwerty::fghj a;
-
-    asdf() : a{} {};
-};
-
-TEST_CASE("test test")
-{
-    qwerty::xyz<asdf> obj{};
-
-    CHECK(*obj.value().a.b == 0);
-}
-
 namespace Svd2cppObjects
 {
-namespace MyRegister
-{
-
-    struct register1
+    namespace MyRegister
     {
-        Svd2cppObjects::Bitfield<24, 8> byte1;
-        Svd2cppObjects::Bitfield<16, 8> byte2;
-        Svd2cppObjects::Bitfield<8, 8> byte3;
-        Svd2cppObjects::Bitfield<0, 8> byte4;
 
-        register1(REG_ADDR base) : byte1{base}, byte2{base}, byte3{base}, byte4{base} {};
-    };
-}
+        struct register1
+        {
+            Svd2cppObjects::Bitfield<24, 8> byte1;
+            Svd2cppObjects::Bitfield<16, 8> byte2;
+            Svd2cppObjects::Bitfield<8, 8> byte3;
+            Svd2cppObjects::Bitfield<0, 8> byte4;
+
+            register1(REG_ADDR base) : byte1{base}, byte2{base}, byte3{base}, byte4{base} {};
+        };
+    }
 }
 
 TEST_CASE("Basic register init")
@@ -68,7 +30,6 @@ TEST_CASE("Basic register init")
     auto arr = new std::array<REG_ADDR, 5>;
     *arr = {0, 0, 0x01020304, 0, 0};
 
-    const size_t offset{0x8};
     const size_t resetValue{0};
 
     using RegisterType = Svd2cppObjects::Register<0x8, Svd2cppObjects::MyRegister::register1, resetValue>;
@@ -84,22 +45,22 @@ TEST_CASE("Basic register init")
 
     std::cout << "Addr" << static_cast<void*>(&reg) << std::endl;
     std::cout << "Addr" << static_cast<void*>(&reg->byte1) << std::endl;
-    std::cout << "Addr" << reg->byte1.internaladdress() << std::endl;
+    std::cout << "Addr" << reg->byte1.internalAddress() << std::endl;
 
     CHECK(reg->byte1.get() == 0x1);
     CHECK(reg->byte2.get() == 0x2);
     CHECK(reg->byte3.get() == 0x3);
     CHECK(reg->byte4.get() == 0x4);
 
-    CHECK(reg->byte1.internal() == arr->at(2));
-    CHECK(reg->byte2.internal() == arr->at(2));
-    CHECK(reg->byte3.internal() == arr->at(2));
-    CHECK(reg->byte4.internal() == arr->at(2));
+    CHECK(reg->byte1.internalValue() == arr->at(2));
+    CHECK(reg->byte2.internalValue() == arr->at(2));
+    CHECK(reg->byte3.internalValue() == arr->at(2));
+    CHECK(reg->byte4.internalValue() == arr->at(2));
 
-    CHECK(reg->byte1.internaladdress() == &arr->at(2));
-    CHECK(reg->byte2.internaladdress() == &arr->at(2));
-    CHECK(reg->byte3.internaladdress() == &arr->at(2));
-    CHECK(reg->byte4.internaladdress() == &arr->at(2));
+    CHECK(reg->byte1.internalAddress() == &arr->at(2));
+    CHECK(reg->byte2.internalAddress() == &arr->at(2));
+    CHECK(reg->byte3.internalAddress() == &arr->at(2));
+    CHECK(reg->byte4.internalAddress() == &arr->at(2));
 
     for (size_t i = 0; i < arr->size(); i++)
     {
