@@ -4,7 +4,7 @@
 BUILD_DIR="build"
 
 # Create build folder if not exists
-if [ ! -d $BUILD_DIR ]; then
+if [ ! -e $BUILD_DIR ]; then
     mkdir build
 fi
 

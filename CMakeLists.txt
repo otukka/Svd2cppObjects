@@ -43,7 +43,7 @@ if(BUILD_TESTS)
     add_executable(tests)
 
     set_property(TARGET tests  PROPERTY CXX_STANDARD ${PROJECT_STD_VERSION})
-    # target_compile_options(tests PRIVATE -Wall -Wextra -pedantic -Werror -Wconversion)
+    target_compile_options(tests PRIVATE -Wall -Wextra -Wpedantic -Wconversion -Werror)
 
     target_sources(tests PRIVATE
     tests/BitfieldTests.cpp
