@@ -66,20 +66,35 @@ def main(args):
         o.mkdir()
 
     with open(p, 'r') as f:
-        data = xmltodict.parse(f.read(), force_list={
-                               'field': {}, 'register': {}}, attr_prefix='attr_')
-
-    if args.debug == True:
-
-        with open(o+p.stem+'.json', 'w') as f:
-            json.dump(data, f)
+        data = xmltodict.parse(
+            f.read(), attr_prefix='attr_', force_list=['register', 'field'])
 
     for perph in data['device']['peripherals']['peripheral']:
-        if ('attr_derivedFrom' in perph):
+        if 'attr_derivedFrom' in perph:
 
             perph['groupName'] = list(filter(lambda x: x['name'] == perph['attr_derivedFrom'],
                                       data['device']['peripherals']['peripheral']))[0]['groupName']
 
+        if 'registers' in perph:
+            for reg in perph['registers']['register']:
+                if not 'fields' in reg:
+                    reg['fields'] = {'field': []}
+
+                if len(reg['fields']['field']) == 0:
+                    reg['fields']['field'].append(
+                        {
+                            "name": "SOMETHING_ODD",
+                            "description": "See the reference manual",
+                            "bitOffset": "0",
+                            "bitWidth": "32"
+                        }
+                    )
+
+    if args.debug == True:
+        with open(o+p.stem+'.json', 'w') as f:
+            json.dump(data, f)
+
+    for perph in data['device']['peripherals']['peripheral']:
         peripheral(perph, o)
 
     factory(data['device'], o)
