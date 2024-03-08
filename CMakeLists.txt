@@ -60,7 +60,7 @@ if(BUILD_TESTS)
 
     set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/Catch2/contrib/")
 
-    target_compile_definitions(tests PRIVATE TEST_HELPERS=1)
+    target_compile_definitions(tests PRIVATE TEST_CODE=1 DEV_DEBUG=1)
 
     include(CTest)
     include(Catch)

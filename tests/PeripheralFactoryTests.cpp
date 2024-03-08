@@ -8,23 +8,8 @@
 #include "Register.hpp"
 #include "Types.hpp"
 
-Svd2cppObjects::PeripheralFactory* Svd2cppObjects::PeripheralFactory::instance_ = nullptr;
-
-struct register1
-{
-    Svd2cppObjects::Bitfield<0, 32> word;
-    register1(REG_ADDR base) : word{base} {}
-};
-
-struct peripheral1
-{
-    Svd2cppObjects::Register<0x16, register1, 0x0> reg1;
-    Svd2cppObjects::Register<0x8, register1, 0x0> reg2;
-
-    peripheral1(REG_ADDR base) : reg1{base}, reg2{base} {};
-};
-
-using PeripheralType = Svd2cppObjects::Peripheral<0, peripheral1>;
+using namespace Svd2cppObjects::PLATFORM;
+PeripheralFactory* PeripheralFactory::instance_ = nullptr;
 
 TEST_CASE("Basic factory use")
 {
@@ -34,20 +19,16 @@ TEST_CASE("Basic factory use")
     memset(arr, 0, 256);
 
     auto base = reinterpret_cast<REG_ADDR>(arr);
-    auto stored = PeripheralType{base};
+    auto object = GROUP::PER1{base};
 
-    CHECK(stored->reg1->word == 0x0);
-    stored->reg1->word = 0xfafafafa;
-    CHECK(stored->reg1->word == 0xfafafafa);
+    CHECK(object->REG1->FIELD == 0x0);
+    object->REG1->FIELD = 0xfafafafa;
+    CHECK(object->REG1->FIELD == 0xfafafafa);
+    CHECK(object->REG2->FIELD == 0x0);
 
-    const std::string peripheralName{"peripheral"};
-
-    Svd2cppObjects::PeripheralFactory::instance()->registerPeripheral(peripheralName,
-                                                                      reinterpret_cast<PeripheralType*>(&stored));
-
-    auto fetched = *Svd2cppObjects::PeripheralFactory::instance()->create<PeripheralType>(peripheralName);
-
-    CHECK(fetched->reg1->word == 0xfafafafa);
-    fetched->reg1->word = 0xdeadbeef;
-    CHECK(fetched->reg1->word == 0xdeadbeef);
+    auto smart_ptr = PeripheralFactory::instance()->createPER1(base);
+    CHECK(smart_ptr->REG1->FIELD == 0xfafafafa);
+    smart_ptr->REG1->FIELD = 0;
+    CHECK(smart_ptr->REG1->FIELD == 0x0);
+    CHECK(smart_ptr->REG2->FIELD == 0x0);
 }

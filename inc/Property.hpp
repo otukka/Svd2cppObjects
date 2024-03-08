@@ -12,12 +12,15 @@ namespace Svd2cppObjects
 
     public:
         Property(){};
+        explicit Property(T t) : value{t} {};
         ~Property(){};
 
         // copy assignment
         T* operator=(const T& f)
         {
-            // std::cout << "copy assignment operator" << std::endl;
+#if defined(DEV_DEBUG)
+            std::cout << "copy assignment operator" << std::endl;
+#endif
             value = f;
             return &value;
         }
@@ -25,7 +28,9 @@ namespace Svd2cppObjects
         // move assignment
         T* operator=(const T&& f)
         {
-            // std::cout << "move assignment operator" << std::endl;
+#if defined(DEV_DEBUG)
+            std::cout << "move assignment operator" << std::endl;
+#endif
             value = std::move(f);
             return &value;
         }
@@ -33,35 +38,45 @@ namespace Svd2cppObjects
         // function call operator
         T* operator()()
         {
-            // std::cout << "const function call operator" << std::endl;
+#if defined(DEV_DEBUG)
+            std::cout << "const function call operator" << std::endl;
+#endif
             return &value;
         }
 
         // function call operator
         T operator()() const
         {
-            // std::cout << "function call operator" << std::endl;
+#if defined(DEV_DEBUG)
+            std::cout << "function call operator" << std::endl;
+#endif
             return value;
         }
 
         // user defined conversion to  T
         operator T() const
         {
-            // std::cout << "user defined conversion" << std::endl;
+#if defined(DEV_DEBUG)
+            std::cout << "user defined conversion" << std::endl;
+#endif
             return value;
         }
 
         // user defined conversion to  T*
         explicit operator T*()
         {
-            // std::cout << "explicit user defined conversion to pointer" << std::endl;
+#if defined(DEV_DEBUG)
+            std::cout << "explicit user defined conversion to pointer" << std::endl;
+#endif
             return &value;
         }
 
         // pointer access operator
         T* operator->()
         {
-            // std::cout << "pointer access operator" << std::endl;
+#if defined(DEV_DEBUG)
+            std::cout << "pointer access operator" << std::endl;
+#endif
             return &value;
         }
     };

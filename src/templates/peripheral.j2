@@ -1,7 +1,8 @@
-#ifndef _SVD_2_CPP_OBJECTS_{{NAME}}_INCLUDE_HPP_
-#define _SVD_2_CPP_OBJECTS_{{NAME}}_INCLUDE_HPP_
+#ifndef _SVD_2_CPP_OBJECTS_{{peripheral}}_INCLUDE_HPP_
+#define _SVD_2_CPP_OBJECTS_{{peripheral}}_INCLUDE_HPP_
 
-// NAME: {{NAME}}
+// patform: {{platform}}
+// peripheral: {{peripheral}}
 // groupName: {{groupName}}
 {% if attr_derivedFrom is defined %}
 // attr_derivedFrom: {{attr_derivedFrom}}
@@ -17,10 +18,12 @@
 
 namespace Svd2cppObjects
 {
-    namespace {{groupName}}
+    namespace {{platform}}
     {
+        namespace {{groupName}}
+        {
 {% if attr_derivedFrom is defined %}
-        using {{NAME}} = Peripheral<{{baseAddress}}, {{attr_derivedFrom}}_>;
+                using {{peripheral}} = Peripheral<{{baseAddress}}, {{attr_derivedFrom}}_>;
 {% else %}
 
 {% include 'peripheral_register_bitfield.j2' %}
@@ -28,20 +31,21 @@ namespace Svd2cppObjects
 {% include 'peripheral_register.j2' %}
 
 
-        /// @brief {{description | replace("\n", " ")}}
-{% if groupName != NAME %}
-        using {{NAME}} = Peripheral<{{baseAddress}}, {{NAME}}_>;
+            /// @brief {{description | replace("\n", " ")}}
+{% if groupName != peripheral %}
+            using {{peripheral}} = Peripheral<{{baseAddress}}, {{peripheral}}_>;
 {% else %}
 {% if attr_derivedFrom is defined %}
-        using {{NAME}} = Peripheral<{{baseAddress}}, {{attr_derivedFrom}}_>;
+            using {{peripheral}} = Peripheral<{{baseAddress}}, {{attr_derivedFrom}}_>;
 {% else %}
-        using {{NAME}} = Peripheral<{{baseAddress}}, {{NAME}}_>;
+            using {{peripheral}} = Peripheral<{{baseAddress}}, {{peripheral}}_>;
 {% endif %}
 {% endif %}
 {% endif %}
 
-    } // namespace {{groupName}}
+        } // namespace {{groupName}}
+    } // namespace {{platform}}
 } // namespace Svd2cppObjects
 
-#endif  // _SVD_2_CPP_OBJECTS_{{NAME}}_INCLUDE_HPP_
+#endif  // _SVD_2_CPP_OBJECTS_{{peripheral}}_INCLUDE_HPP_
 

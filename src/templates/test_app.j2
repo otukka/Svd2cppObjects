@@ -1,16 +1,15 @@
 
+#include "{{platform}}.hpp"
 
-#include "{{NAME}}.hpp"
 
-using namespace Svd2cppObjects;
-using namespace Svd2cppObjects::{{NAME}};
+using namespace Svd2cppObjects::{{platform}};
 
 PeripheralFactory* PeripheralFactory::instance_ = nullptr;
 
 int main(void)
 {
 
-    auto gpiog = *PeripheralFactory::instance()->createGPIOG();
+    auto gpiog = PeripheralFactory::instance()->createGPIOI();
 
     gpiog->ODR->ODR6.get();
     gpiog->ODR->ODR6.set();

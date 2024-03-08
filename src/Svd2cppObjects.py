@@ -9,9 +9,10 @@ import json
 from pathlib import Path
 
 
-def peripheral(data, output):
+def peripheral(data, platform, output):
 
-    data['NAME'] = str(data['name']).upper()
+    data['platform'] = platform
+    data['peripheral'] = str(data['name']).upper()
 
     env = Environment(
         loader=FileSystemLoader('src/templates'),
@@ -27,7 +28,7 @@ def peripheral(data, output):
 
 def factory(data, output):
 
-    data['NAME'] = str(data['name']).upper()
+    data['platform'] = str(data['name']).upper()
 
     env = Environment(
         loader=FileSystemLoader('src/templates'),
@@ -43,7 +44,7 @@ def factory(data, output):
 
 def test_app(data, output):
 
-    data['NAME'] = str(data['name']).upper()
+    data['platform'] = str(data['name']).upper()
 
     env = Environment(
         loader=FileSystemLoader('src/templates'),
@@ -95,7 +96,7 @@ def main(args):
             json.dump(data, f)
 
     for perph in data['device']['peripherals']['peripheral']:
-        peripheral(perph, o)
+        peripheral(perph, data['device']['name'], o)
 
     factory(data['device'], o)
 

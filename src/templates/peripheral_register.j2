@@ -1,21 +1,21 @@
 
-        struct {{NAME}}_ {
+            struct {{peripheral}}_ {
 
 {% for register in registers.register %}
 {% if attr_derivedFrom is not defined %}
-        /// @brief {{register.description | replace("\n", " ")}}
-        Register<{{register.addressOffset}}, {{NAME}}_{{register.name}}_, {{register.resetValue}}> {{register.name}};
+                /// @brief {{register.description | replace("\n", " ")}}
+                Register<{{register.addressOffset}}, {{peripheral}}_{{register.name}}_, {{register.resetValue}}> {{register.name}};
 {% endif %}
 
 {% endfor %}
 
-        {{NAME}}_(REG_ADDR base) : 
+                {{peripheral}}_(REG_ADDR base) : 
 {% for register in registers.register %}
-            {{register.name}}{base}
+                {{register.name}}{base}
 {%- if not loop.last %}
 ,
 {% else %}
  {};
 {% endif %}
 {% endfor %}
-        };
+            };

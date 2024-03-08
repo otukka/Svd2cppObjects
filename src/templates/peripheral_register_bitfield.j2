@@ -1,13 +1,13 @@
 {% for register in registers.register %}
-        struct {{NAME}}_{{register.name}}_ 
-        {
+            struct {{peripheral}}_{{register.name}}_ 
+            {
 {% if register.fields is defined %}
 {% for field in register.fields.field %}
-            /// @brief {{field.description | replace("\n", " ")}}
-            Bitfield<{{field.bitOffset}}, {{field.bitWidth}}> {{field.name}};
+                /// @brief {{field.description | replace("\n", " ")}}
+                Bitfield<{{field.bitOffset}}, {{field.bitWidth}}> {{field.name}};
 {% endfor %}
 
-            {{NAME}}_{{register.name}}_(REG_ADDR base) :
+                {{peripheral}}_{{register.name}}_(REG_ADDR base) :
 {% for field in register.fields.field %}
                 {{field.name}}{base}
 {%- if not loop.last %}
@@ -19,6 +19,6 @@
 {% else %}
     {{register.name}}_(REG_ADDR base){};
 {% endif %}
-        };
+            };
 
 {% endfor %}

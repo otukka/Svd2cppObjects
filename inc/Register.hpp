@@ -5,7 +5,7 @@
 #include <cstddef>
 #include <iostream>
 
-#include "Property.hpp"
+#include "Bitfield.hpp"
 #include "Types.hpp"
 
 namespace Svd2cppObjects
@@ -14,18 +14,25 @@ namespace Svd2cppObjects
     template<REG_ADDR offset, typename content, REG_ADDR resetValue>
     class Register
     {
+    public:
         content value;
         IO* ptr;
 
-    public:
         Register() = delete;
 
-        explicit Register(REG_ADDR addr) :
-            value{addr + offset}, ptr{reinterpret_cast<IO*>(addr + offset)} {
-                                      // std::cout << "Register init" << std::endl;
-                                  };
+        explicit Register(REG_ADDR addr) : value{addr + offset}, ptr{reinterpret_cast<IO*>(addr + offset)}
+        {
+#if defined(DEV_DEBUG)
+            std::cout << "  Register: constructor" << std::endl;
+#endif
+        };
 
-        ~Register(){};
+        ~Register()
+        {
+#if defined(DEV_DEBUG)
+            std::cout << "  Register: destructor" << std::endl;
+#endif
+        };
 
         void reset()
         {
@@ -35,14 +42,24 @@ namespace Svd2cppObjects
         void* operator new(size_t n, REG_ADDR addr)
         {
             (void)n;
-            return reinterpret_cast<void*>(addr);
+#if defined(DEV_DEBUG)
+            std::cout << "  Register: new operator" << std::endl;
+#endif
+            return reinterpret_cast<void*>(addr + offset);
         }
 
-        void operator delete(void*){};
+        void operator delete(void*)
+        {
+#if defined(DEV_DEBUG)
+            std::cout << "  Register: delete operator" << std::endl;
+#endif
+        };
 
         content* operator->()
         {
-            // std::cout << "pointer access operator" << std::endl;
+#if defined(DEV_DEBUG)
+            std::cout << "  Register: pointer access operator" << std::endl;
+#endif
             return &value;
         }
     };

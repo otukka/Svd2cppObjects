@@ -1,16 +1,18 @@
-#ifndef _SVD_2_CPP_OBJECTS_{{NAME}}_INCLUDE_HPP_
-#define _SVD_2_CPP_OBJECTS_{{NAME}}_INCLUDE_HPP_
+#ifndef _SVD_2_CPP_OBJECTS_{{platform}}_INCLUDE_HPP_
+#define _SVD_2_CPP_OBJECTS_{{platform}}_INCLUDE_HPP_
 
-{% for peripheral in peripherals.peripheral -%} 
+{% for peripheral in peripherals.peripheral -%}
 #include "{{peripheral.name}}.hpp"
-{% endfor %} 
+{% endfor %}
 
-#include <unordered_map>
 
-#include "Peripheral.hpp" 
+#include <memory>
+
  
-namespace Svd2cppObjects {
-    namespace {{NAME}} {
+namespace Svd2cppObjects 
+{
+    namespace {{platform}} 
+    {
 
         class PeripheralFactory
         {
@@ -34,18 +36,23 @@ namespace Svd2cppObjects {
             }
 
 {% for peripheral in peripherals.peripheral %}
-            {{peripheral.groupName}}::{{peripheral.NAME}}* create{{peripheral.NAME}}()
+{%- if peripheral.attr_derivedFrom is not defined %}
+            std::shared_ptr<{{peripheral.groupName}}::{{peripheral.peripheral}}_> create{{peripheral.peripheral}}()
             {
-                return new (0) {{peripheral.groupName}}::{{peripheral.NAME}}(0);
+                return std::make_shared<{{peripheral.groupName}}::{{peripheral.peripheral}}_>(0);
             }
+{%- else %}
+            std::shared_ptr<{{peripheral.groupName}}::{{peripheral.attr_derivedFrom}}_> create{{peripheral.peripheral}}()
+            {
+                return std::make_shared<{{peripheral.groupName}}::{{peripheral.attr_derivedFrom}}_>(0);
+            }
+{%- endif %}
+
 
 {% endfor %}
-
-
-
         }; // class PeripheralFactory
-    } // namespace {{NAME}}
+    } // namespace {{platform}}
 } // namespace Svd2cppObjects
 
-#endif  // _SVD_2_CPP_OBJECTS_{{NAME}}_INCLUDE_HPP_
+#endif  // _SVD_2_CPP_OBJECTS_{{platform}}_INCLUDE_HPP_
 

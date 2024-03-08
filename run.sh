@@ -28,4 +28,6 @@ cd ${ROOT_DIR} && python ${ROOT_DIR}/src/Svd2cppObjects.py $1 $2
 deactivate
 
 # Sanity check app
-g++ -Iout -Iinc -m32 -g -Wall -Wpedantic -Wconversion -Werror out/test_app.cpp -o out/test_app
+g++ -std=gnu++14 --save-temps -I./out -I./inc -m32 -g -Wall -Wpedantic -Wconversion -Werror -DDEV_DEBUG -DSYSTEM_BIT_WIDTH=SYSTEM_32_BIT out/test_app.cpp -o out/test_app || exit -1
+
+./out/test_app

@@ -34,54 +34,82 @@ namespace Svd2cppObjects
         Bitfield() = default;
         explicit Bitfield(REG_ADDR addr)
         {
+#if defined(DEV_DEBUG)
+            std::cout << "    Bitfield: constructor" << std::endl;
+#endif
             value = reinterpret_cast<REG_ADDR*>(addr);
         };
-        ~Bitfield() = default;
+        ~Bitfield()
+        {
+#if defined(DEV_DEBUG)
+            std::cout << "    Bitfield: destructor" << std::endl;
+#endif
+        };
 
         void* operator new(size_t n, REG_ADDR addr)
         {
             (void)n;
+#if defined(DEV_DEBUG)
+            std::cout << "    Bitfield: new operator" << std::endl;
+#endif
             return reinterpret_cast<void*>(addr);
         }
 
         // Memory mapped IO, don't do anything here
-        void operator delete(void*){};
+        void operator delete(void*)
+        {
+#if defined(DEV_DEBUG)
+            std::cout << "    Bitfield: delete operator" << std::endl;
+#endif
+        };
 
         IO* operator=(const REG_ADDR& f)
         {
-            // std::cout << "copy assignment operator" << std::endl;
+#if defined(DEV_DEBUG)
+            std::cout << "    Bitfield: copy assignment operator" << std::endl;
+#endif
             set(f);
             return value;
         }
 
         IO* operator=(REG_ADDR&& f)
         {
-            // std::cout << "move assignment operator" << std::endl;
+#if defined(DEV_DEBUG)
+            std::cout << "    Bitfield: move assignment operator" << std::endl;
+#endif
             set(std::move(f));
             return value;
         }
 
         IO* operator()()
         {
-            // std::cout << "function call operator" << std::endl;
+#if defined(DEV_DEBUG)
+            std::cout << "    Bitfield: function call operator" << std::endl;
+#endif
             return get();
         }
 
         operator REG_ADDR()
         {
-            // std::cout << "user defined conversion" << std::endl;
+#if defined(DEV_DEBUG)
+            std::cout << "    Bitfield: user defined conversion" << std::endl;
+#endif
             return get();
         }
 
         explicit operator REG_ADDR*()
         {
-            // std::cout << "explicit user defined conversion to pointer" << std::endl;
+#if defined(DEV_DEBUG)
+            std::cout << "    Bitfield: explicit user defined conversion to pointer" << std::endl;
+#endif
             return &get();
         }
 
         REG_ADDR* operator->()
         {
-            // std::cout << "pointer access operator" << std::endl;
+#if defined(DEV_DEBUG)
+            std::cout << "    Bitfield: pointer access operator" << std::endl;
+#endif
             return &get();
         }
 
@@ -122,7 +150,7 @@ namespace Svd2cppObjects
             *value ^= (ones(width) << offset);
         }
 
-#ifdef TEST_HELPERS
+#if defined(TEST_CODE)
         REG_ADDR internalValue()
         {
             return *value;
@@ -131,7 +159,7 @@ namespace Svd2cppObjects
         {
             return value;
         }
-#endif  // TEST_HELPERS
+#endif  // TEST_CODE
     };
 
 }  // namespace Svd2cppObjects
