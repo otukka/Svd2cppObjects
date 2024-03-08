@@ -20,10 +20,10 @@ namespace Svd2cppObjects
     public:
         Register() = delete;
 
-        explicit Register(REG_ADDR addr) : value{addr + offset}, ptr{reinterpret_cast<IO*>(addr + offset)}
-        {
-            std::cout << "Register init" << std::endl;
-        };
+        explicit Register(REG_ADDR addr) :
+            value{addr + offset}, ptr{reinterpret_cast<IO*>(addr + offset)} {
+                                      // std::cout << "Register init" << std::endl;
+                                  };
 
         ~Register(){};
 

@@ -14,28 +14,16 @@ namespace Svd2cppObjects {
 
         class PeripheralFactory
         {
-
-        public:
-            enum PERIPHERAL
-            {
-        {% for peripheral in peripherals.peripheral %}
-                {{peripheral.NAME}}
-        {%- if not loop.last -%}
-        ,
-        {% else %}
-
-        {% endif %}
-        {% endfor %}
-            };
-
         private:
             static PeripheralFactory* instance_;
-            std::unordered_map<PERIPHERAL, Svd2cppObjects::PeripheralBase*> peripherals;
 
             PeripheralFactory(){};
             ~PeripheralFactory(){};
 
         public:
+            PeripheralFactory(PeripheralFactory &other) = delete;
+            void operator=(const PeripheralFactory &) = delete;
+
             static PeripheralFactory* instance()
             {
                 if (instance_ == nullptr)
@@ -45,40 +33,15 @@ namespace Svd2cppObjects {
                 return instance_;
             }
 
-            template<typename T>
-            T* derived(const PERIPHERAL& name)
+{% for peripheral in peripherals.peripheral %}
+            {{peripheral.groupName}}::{{peripheral.NAME}}* create{{peripheral.NAME}}()
             {
-                if (peripherals.find(name) != peripherals.end())
-                {
-                    return reinterpret_cast<T*>(instance()->peripherals[name]);
-                }
-                return static_cast<T*>(nullptr);
+                return new (0) {{peripheral.groupName}}::{{peripheral.NAME}}(0);
             }
 
-            PeripheralBase* base(const PERIPHERAL& name)
-            {
-                if (peripherals.find(name) != peripherals.end())
-                {
-                    return instance()->peripherals[name];
-                }
-                return nullptr;
-            }
-
-            void registerPeripheral(const PERIPHERAL& name, PeripheralBase* peripheral)
-            {
-                instance()->peripherals[name] = peripheral;
-            }
+{% endfor %}
 
 
-
-
-        public:
-            static void registerPeripherals()
-            {
-        {% for peripheral in peripherals.peripheral %}
-                instance()->registerPeripheral(PeripheralFactory::PERIPHERAL::{{peripheral.NAME}}, new (0) {{peripheral.groupName}}::{{peripheral.NAME}}(0));
-        {% endfor %}
-            }
 
         }; // class PeripheralFactory
     } // namespace {{NAME}}

@@ -10,10 +10,7 @@ PeripheralFactory* PeripheralFactory::instance_ = nullptr;
 int main(void)
 {
 
-    auto factory = PeripheralFactory::instance();
-    factory->registerPeripherals();
-
-    auto gpiog = *PeripheralFactory::instance()->derived<GPIO::GPIOG>(PeripheralFactory::GPIOG);
+    auto gpiog = *PeripheralFactory::instance()->createGPIOG();
 
     gpiog->ODR->ODR6.get();
     gpiog->ODR->ODR6.set();
