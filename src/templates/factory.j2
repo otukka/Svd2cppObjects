@@ -39,12 +39,12 @@ namespace Svd2cppObjects
 {%- if peripheral.attr_derivedFrom is not defined %}
             std::shared_ptr<{{peripheral.groupName}}::{{peripheral.peripheral}}_> create{{peripheral.peripheral}}()
             {
-                return std::make_shared<{{peripheral.groupName}}::{{peripheral.peripheral}}_>(0);
+                return std::make_shared<{{peripheral.groupName}}::{{peripheral.peripheral}}_>({{peripheral.baseAddress}});
             }
 {%- else %}
             std::shared_ptr<{{peripheral.groupName}}::{{peripheral.attr_derivedFrom}}_> create{{peripheral.peripheral}}()
             {
-                return std::make_shared<{{peripheral.groupName}}::{{peripheral.attr_derivedFrom}}_>(0);
+                return std::make_shared<{{peripheral.groupName}}::{{peripheral.attr_derivedFrom}}_>({{peripheral.baseAddress}});
             }
 {%- endif %}
 
