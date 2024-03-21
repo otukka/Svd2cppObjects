@@ -1,12 +1,15 @@
 #include <catch2/catch_all.hpp>
 
 #include "Bitfield.hpp"
-
+namespace
+{
+    using namespace Svd2cppObjects;
+}
 #define INIT_BITS(offset, width)                                                                                       \
     REG_ADDR* p = new REG_ADDR;                                                                                        \
     *p = 0;                                                                                                            \
     auto base = reinterpret_cast<REG_ADDR>(p);                                                                         \
-    auto bits = Svd2cppObjects::Bitfield<offset, width>{base};
+    auto bits = Bitfield<offset, width>{base};
 
 TEST_CASE("Init 32-bits")
 {
