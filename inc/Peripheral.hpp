@@ -25,7 +25,8 @@ namespace Svd2cppObjects
         explicit Peripheral(REG_ADDR addr) : value{addr + offset}
         {
 #if defined(DEV_DEBUG)
-            std::cout << "Peripheral: constructor" << std::endl;
+            std::cout << "Peripheral: constructor, Address: 0x" << std::hex << addr << ", Offset: 0x" << offset
+                      << std::endl;
 #endif
         };
         ~Peripheral()

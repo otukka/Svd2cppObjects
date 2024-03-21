@@ -24,7 +24,7 @@ namespace
 namespace Svd2cppObjects
 {
 
-    template<REG_ADDR offset, REG_ADDR width>
+    template<REG_ADDR shift, REG_ADDR width>
     class Bitfield
     {
     private:
@@ -35,7 +35,8 @@ namespace Svd2cppObjects
         explicit Bitfield(REG_ADDR addr)
         {
 #if defined(DEV_DEBUG)
-            std::cout << "    Bitfield: constructor" << std::endl;
+            std::cout << "    Bitfield: constructor, Address: 0x" << std::hex << addr << std::dec
+                      << ", Shift: " << shift << ", Width: " << width << std::endl;
 #endif
             value = reinterpret_cast<REG_ADDR*>(addr);
         };
@@ -131,23 +132,23 @@ namespace Svd2cppObjects
         {
             if (newValue <= ones(width))
             {
-                *value |= (newValue << offset);
+                *value |= (newValue << shift);
             }
         }
 
         REG_ADDR get()
         {
-            return ((*value & (ones(width) << offset)) >> offset);
+            return ((*value & (ones(width) << shift)) >> shift);
         }
 
         void clear()
         {
-            *value &= ~(ones(width) << offset);
+            *value &= ~(ones(width) << shift);
         }
 
         void flip()
         {
-            *value ^= (ones(width) << offset);
+            *value ^= (ones(width) << shift);
         }
 
 #if defined(TEST_CODE)

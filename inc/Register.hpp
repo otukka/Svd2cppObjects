@@ -23,7 +23,8 @@ namespace Svd2cppObjects
         explicit Register(REG_ADDR addr) : value{addr + offset}, ptr{reinterpret_cast<IO*>(addr + offset)}
         {
 #if defined(DEV_DEBUG)
-            std::cout << "  Register: constructor" << std::endl;
+            std::cout << "  Register: constructor, Address: 0x" << std::hex << addr << ", Offset: 0x" << offset
+                      << std::endl;
 #endif
         };
 

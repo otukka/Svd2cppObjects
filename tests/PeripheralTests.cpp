@@ -19,7 +19,7 @@ struct register1
 
 struct peripheral1
 {
-    Svd2cppObjects::Register<0x16, register1, 0x0> reg1;
+    Svd2cppObjects::Register<0x28, register1, 0x0> reg1;
     Svd2cppObjects::Register<0x8, register1, 0x0> reg2;
 
     peripheral1(REG_ADDR base) : reg1{base}, reg2{base} {};
@@ -43,6 +43,11 @@ TEST_CASE("Basic peripheral init")
     CHECK(periph->reg1->byte2 == 0x0);
     CHECK(periph->reg1->byte3 == 0x0);
     CHECK(periph->reg1->byte4 == 0x0);
+
+    CHECK(periph->reg2->byte1 == 0x0);
+    CHECK(periph->reg2->byte2 == 0x0);
+    CHECK(periph->reg2->byte3 == 0x0);
+    CHECK(periph->reg2->byte4 == 0x0);
 
     for (size_t i = 0; i < arr->size(); i++)
     {

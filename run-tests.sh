@@ -23,10 +23,8 @@ else
     fi
 fi
 
-make || exit 1
+make -j`nproc` || exit 1
 
 make tests || exit 1
 
 ctest
-
-
