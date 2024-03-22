@@ -1,6 +1,7 @@
 
 #include "{{platform}}.hpp"
 
+#include <cassert>
 
 using namespace Svd2cppObjects::{{platform}};
 
@@ -9,10 +10,12 @@ PeripheralFactory* PeripheralFactory::instance_ = nullptr;
 int main(void)
 {
 
-    auto gpiog = PeripheralFactory::instance()->createGPIOG();
+    auto GPIOG = PeripheralFactory::instance()->createGPIOG();
 
-    gpiog->ODR->ODR6.get();
-    gpiog->ODR->ODR6.set();
+    // Do not do anything else than read this pointer address (SEGFAULT)
+    auto p = GPIOG->ODR->ODR6.internalAddress();
+
+    assert(p);
 
     return 0;
 }
