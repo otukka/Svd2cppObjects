@@ -27,4 +27,9 @@ make -j`nproc` || exit 1
 
 make tests || exit 1
 
-ctest
+if [ $# -eq 0 ]; then
+    ctest
+else
+    ctest -R "$1"
+fi
+
