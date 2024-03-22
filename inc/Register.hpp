@@ -8,6 +8,17 @@
 #include "Bitfield.hpp"
 #include "Types.hpp"
 
+namespace
+{
+// clang-format off
+    #if defined(DEV_DEBUG)
+    #define REGISTER_MESSAGE(message) std::cout << "  Register " << message
+    #else
+    #define REGISTER_MESSAGE(message)    do {} while (0)
+    #endif
+    // clang-format on
+}
+
 namespace Svd2cppObjects
 {
 
@@ -22,17 +33,12 @@ namespace Svd2cppObjects
 
         explicit Register(REG_ADDR addr) : value{addr + offset}, ptr{reinterpret_cast<IO*>(addr + offset)}
         {
-#if defined(DEV_DEBUG)
-            std::cout << "  Register: constructor, Address: 0x" << std::hex << addr << ", Offset: 0x" << offset
-                      << std::endl;
-#endif
+            REGISTER_MESSAGE("Address: 0x" << std::hex << addr + offset << " constructor\n");
         };
 
         ~Register()
         {
-#if defined(DEV_DEBUG)
-            std::cout << "  Register: destructor" << std::endl;
-#endif
+            REGISTER_MESSAGE("destructor\n");
         };
 
         void reset()
@@ -40,27 +46,9 @@ namespace Svd2cppObjects
             *ptr = resetValue;
         }
 
-        void* operator new(size_t n, REG_ADDR addr)
-        {
-            (void)n;
-#if defined(DEV_DEBUG)
-            std::cout << "  Register: new operator" << std::endl;
-#endif
-            return reinterpret_cast<void*>(addr + offset);
-        }
-
-        void operator delete(void*)
-        {
-#if defined(DEV_DEBUG)
-            std::cout << "  Register: delete operator" << std::endl;
-#endif
-        };
-
         content* operator->()
         {
-#if defined(DEV_DEBUG)
-            std::cout << "  Register: pointer access operator" << std::endl;
-#endif
+            REGISTER_MESSAGE("pointer access operator\n");
             return &value;
         }
     };

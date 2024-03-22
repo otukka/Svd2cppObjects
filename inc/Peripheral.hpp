@@ -8,6 +8,17 @@
 #include "Register.hpp"
 #include "Types.hpp"
 
+namespace
+{
+    // clang-format off
+    #if defined(DEV_DEBUG)
+    #define PERIPHERAL_MESSAGE(message) std::cout << "Peripheral " << message
+    #else
+    #define PERIPHERAL_MESSAGE(message)    do {} while (0)
+    #endif
+    // clang-format on
+}
+
 namespace Svd2cppObjects
 {
 
@@ -22,56 +33,29 @@ namespace Svd2cppObjects
         content value;
 
         Peripheral() = delete;
+
         explicit Peripheral(REG_ADDR addr) : value{addr + offset}
         {
-#if defined(DEV_DEBUG)
-            std::cout << "Peripheral: constructor, Address: 0x" << std::hex << addr << ", Offset: 0x" << offset
-                      << std::endl;
-#endif
+            PERIPHERAL_MESSAGE("Address: 0x" << std::hex << addr + offset << " constructor\n");
         };
+
         ~Peripheral()
         {
-#if defined(DEV_DEBUG)
-            std::cout << "Peripheral: destructor" << std::endl;
-#endif
-        };
-
-        void* operator new(size_t n, REG_ADDR addr)
-        {
-            (void)n;
-#if defined(DEV_DEBUG)
-            std::cout << "Peripheral: new operator" << std::endl;
-#endif
-            return reinterpret_cast<void*>(addr + offset);
+            PERIPHERAL_MESSAGE("destructor\n");
         }
 
-        // Memory mapped IO, don't do anything here
-        void operator delete(void*)
-        {
-#if defined(DEV_DEBUG)
-            std::cout << "Peripheral: delete operator" << std::endl;
-#endif
-        };
-
-        // user defined conversion to  T*
         explicit operator content*()
         {
-#if defined(DEV_DEBUG)
-            std::cout << "Peripheral:explicit user defined conversion to pointer" << std::endl;
-#endif
+            PERIPHERAL_MESSAGE("explicit user defined conversion to pointer\n");
             return &value;
         }
 
-        // pointer access operator
         content* operator->()
         {
-#if defined(DEV_DEBUG)
-            std::cout << "Peripheral: pointer access operator" << std::endl;
-#endif
+            PERIPHERAL_MESSAGE("pointer access operator\n");
             return &value;
         }
     };
-
 }  // namespace Svd2cppObjects
 
 #endif  // _PERIPHERAL_INCLUDE_HPP_

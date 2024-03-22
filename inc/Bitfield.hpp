@@ -7,9 +7,15 @@
 #include <limits>
 
 #include "Types.hpp"
-
 namespace
 {
+// clang-format off
+    #if defined(DEV_DEBUG)
+    #define BITFIELD_MESSAGE(message) std::cout << "    Bitfield " << message
+    #else
+    #define BITFIELD_MESSAGE(message)    do {} while (0)
+    #endif
+    // clang-format on
 
     constexpr auto ones(size_t width)
     {
@@ -32,91 +38,58 @@ namespace Svd2cppObjects
 
     public:
         Bitfield() = default;
-        explicit Bitfield(REG_ADDR addr)
+        explicit Bitfield(REG_ADDR addr) : value(reinterpret_cast<REG_ADDR*>(addr))
         {
-#if defined(DEV_DEBUG)
-            std::cout << "    Bitfield: constructor, Address: 0x" << std::hex << addr << std::dec
-                      << ", Shift: " << shift << ", Width: " << width << std::endl;
-#endif
-            value = reinterpret_cast<REG_ADDR*>(addr);
+            BITFIELD_MESSAGE("Shift: " << shift << " Width: " << width << " constructor\n");
         };
+
         ~Bitfield()
         {
-#if defined(DEV_DEBUG)
-            std::cout << "    Bitfield: destructor" << std::endl;
-#endif
-        };
-
-        void* operator new(size_t n, REG_ADDR addr)
-        {
-            (void)n;
-#if defined(DEV_DEBUG)
-            std::cout << "    Bitfield: new operator" << std::endl;
-#endif
-            return reinterpret_cast<void*>(addr);
-        }
-
-        // Memory mapped IO, don't do anything here
-        void operator delete(void*)
-        {
-#if defined(DEV_DEBUG)
-            std::cout << "    Bitfield: delete operator" << std::endl;
-#endif
+            BITFIELD_MESSAGE("destructor\n");
         };
 
         IO* operator=(const REG_ADDR& f)
         {
-#if defined(DEV_DEBUG)
-            std::cout << "    Bitfield: copy assignment operator" << std::endl;
-#endif
+            BITFIELD_MESSAGE("copy assignment operator\n");
             set(f);
             return value;
         }
 
         IO* operator=(REG_ADDR&& f)
         {
-#if defined(DEV_DEBUG)
-            std::cout << "    Bitfield: move assignment operator" << std::endl;
-#endif
+            BITFIELD_MESSAGE("move assignment operator\n");
             set(std::move(f));
             return value;
         }
 
         IO* operator()()
         {
-#if defined(DEV_DEBUG)
-            std::cout << "    Bitfield: function call operator" << std::endl;
-#endif
+            BITFIELD_MESSAGE("function call operator\n");
             return get();
         }
 
         operator REG_ADDR()
         {
-#if defined(DEV_DEBUG)
-            std::cout << "    Bitfield: user defined conversion" << std::endl;
-#endif
+            BITFIELD_MESSAGE("user defined conversion\n");
             return get();
         }
 
         explicit operator REG_ADDR*()
         {
-#if defined(DEV_DEBUG)
-            std::cout << "    Bitfield: explicit user defined conversion to pointer" << std::endl;
-#endif
+            BITFIELD_MESSAGE("explicit user defined conversion to pointer\n");
             return &get();
         }
 
         REG_ADDR* operator->()
         {
-#if defined(DEV_DEBUG)
-            std::cout << "    Bitfield: pointer access operator" << std::endl;
-#endif
+            BITFIELD_MESSAGE("pointer access operator\n");
             return &get();
         }
 
         void set()
         {
             merge(ones(width));
+            BITFIELD_MESSAGE("set()\n");
         }
 
         void set(REG_ADDR newValue)
@@ -126,6 +99,7 @@ namespace Svd2cppObjects
                 clear();
                 merge(newValue);
             }
+            BITFIELD_MESSAGE("set(REG_ADDR newValue)\n");
         }
 
         void merge(REG_ADDR newValue)
@@ -134,21 +108,25 @@ namespace Svd2cppObjects
             {
                 *value |= (newValue << shift);
             }
+            BITFIELD_MESSAGE("merge(REG_ADDR newValue)\n");
         }
 
         REG_ADDR get()
         {
             return ((*value & (ones(width) << shift)) >> shift);
+            BITFIELD_MESSAGE("get()\n");
         }
 
         void clear()
         {
             *value &= ~(ones(width) << shift);
+            BITFIELD_MESSAGE("clear()\n");
         }
 
         void flip()
         {
             *value ^= (ones(width) << shift);
+            BITFIELD_MESSAGE("flip()\n");
         }
 
 #if defined(TEST_CODE)
