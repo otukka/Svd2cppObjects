@@ -9,7 +9,7 @@
 #include "Types.hpp"
 namespace
 {
-// clang-format off
+    // clang-format off
     #if defined(DEV_DEBUG)
     #define BITFIELD_MESSAGE(message) std::cout << "    Bitfield " << message
     #else
@@ -33,11 +33,9 @@ namespace Svd2cppObjects
     template<REG_ADDR shift, REG_ADDR width>
     class Bitfield
     {
-    private:
-        IO* value;
-
     public:
         Bitfield() = default;
+
         explicit Bitfield(REG_ADDR addr) : value(reinterpret_cast<REG_ADDR*>(addr))
         {
             BITFIELD_MESSAGE("Shift: " << shift << " Width: " << width << " constructor\n");
@@ -80,65 +78,69 @@ namespace Svd2cppObjects
             return &get();
         }
 
-        REG_ADDR* operator->()
+        Bitfield<shift, width>* operator->()
         {
             BITFIELD_MESSAGE("pointer access operator\n");
-            return &get();
+            return this;
         }
 
         void set()
         {
-            merge(ones(width));
             BITFIELD_MESSAGE("set()\n");
+            merge(ones(width));
         }
 
         void set(REG_ADDR newValue)
         {
+            BITFIELD_MESSAGE("set(REG_ADDR newValue)\n");
             if (newValue <= ones(width))
             {
                 clear();
                 merge(newValue);
             }
-            BITFIELD_MESSAGE("set(REG_ADDR newValue)\n");
         }
 
         void merge(REG_ADDR newValue)
         {
+            BITFIELD_MESSAGE("merge(REG_ADDR newValue)\n");
             if (newValue <= ones(width))
             {
                 *value |= (newValue << shift);
             }
-            BITFIELD_MESSAGE("merge(REG_ADDR newValue)\n");
         }
 
         REG_ADDR get()
         {
-            return ((*value & (ones(width) << shift)) >> shift);
             BITFIELD_MESSAGE("get()\n");
+            return ((*value & (ones(width) << shift)) >> shift);
         }
 
         void clear()
         {
-            *value &= ~(ones(width) << shift);
             BITFIELD_MESSAGE("clear()\n");
+            *value &= ~(ones(width) << shift);
         }
 
         void flip()
         {
-            *value ^= (ones(width) << shift);
             BITFIELD_MESSAGE("flip()\n");
+            *value ^= (ones(width) << shift);
         }
 
 #if defined(TEST_CODE)
         REG_ADDR internalValue()
         {
+            BITFIELD_MESSAGE("internalValue()\n");
             return *value;
         }
         IO* internalAddress()
         {
+            BITFIELD_MESSAGE("internalAddress()\n");
             return value;
         }
 #endif  // TEST_CODE
+    private:
+        IO* value;
     };
 
 }  // namespace Svd2cppObjects

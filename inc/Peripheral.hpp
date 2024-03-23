@@ -30,8 +30,6 @@ namespace Svd2cppObjects
     class Peripheral : public PeripheralBase
     {
     public:
-        content value;
-
         Peripheral() = delete;
 
         explicit Peripheral(REG_ADDR addr) : value{addr + offset}
@@ -55,6 +53,9 @@ namespace Svd2cppObjects
             PERIPHERAL_MESSAGE("pointer access operator\n");
             return &value;
         }
+
+    public:
+        content value;
     };
 }  // namespace Svd2cppObjects
 

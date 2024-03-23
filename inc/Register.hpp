@@ -26,9 +26,6 @@ namespace Svd2cppObjects
     class Register
     {
     public:
-        content value;
-        IO* ptr;
-
         Register() = delete;
 
         explicit Register(REG_ADDR addr) : value{addr + offset}, ptr{reinterpret_cast<IO*>(addr + offset)}
@@ -46,11 +43,21 @@ namespace Svd2cppObjects
             *ptr = resetValue;
         }
 
+        explicit operator content*()
+        {
+            REGISTER_MESSAGE("explicit user defined conversion to pointer\n");
+            return &value;
+        }
+
         content* operator->()
         {
             REGISTER_MESSAGE("pointer access operator\n");
             return &value;
         }
+
+    private:
+        content value;
+        IO* ptr;
     };
 
 }  // namespace Svd2cppObjects
