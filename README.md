@@ -1,13 +1,13 @@
 # Svd2cppObjects
 
-> NOTE!: Currently, this is untested proof-of-concept library. Do not use.
-
 ## Introduction
 
-TBD
+Svd2cppObjects is tool for converting System View Description (SVD) files to C++ driver library. Intention is to access memory mapped IO with C++. 
+
+This project provides Peripheral, Register, and Bitfield classes. These classes are used to encapsulate memory addresses in a safe way. There is no more need for raw pointer handling. One could manually create driver for custom hardware with these classes.
 
 ## Requirements
-Python needs virtualenv to be installed.
+Python +3.6 and virtualenv is required.
 
 ## Usage
 
@@ -27,33 +27,26 @@ add_subdirectory(Svd2cppObjects)
 
 ```
 target_link_libraries(<target> PRIVATE Svd2cppObjects)
-
 ```
 
-4. In your project main file iclude PeripheralFactory
-
-```
-#include "PeripheralFactory.hpp"
-
-```
-
-5. Initialize peripheral objects in your main function
-
-```
-Svd2cppObjects::<target-platform>::registerPeripherals();
-
-```
-
-6. Example how to use RCC in stm32 platform
-
-```
-auto rcc = *Svd2cppObjects::PeripheralFactory::instance()->create<RNGperipheral::RNGperipheral>(RCCname);
-rcc->reset()
-```
-
-7. Declare bitwidth in root project
+4. Declare bitwidth in root project
 
 ```
 cmake -DSYSTEM_BIT_WIDTH=<SYSTEM_32_BIT|SYSTEM_64_BIT> ..
+```
+
+5. In your project main file include target
 
 ```
+#include "<target>.hpp"
+```
+
+6. Example how to use RCC in STM32F2 platform
+
+```
+auto RCC = PeripheralFactory::instance()->createRCC();
+RCC->AHB1ENR.reset();
+RCC->AHB1ENR->GPIOGEN->set(1);
+```
+
+Example project can be found [here](https://github.com/otukka/Svd2cppObjects-example).
