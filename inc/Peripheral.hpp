@@ -10,7 +10,7 @@
 
 namespace
 {
-    // clang-format off
+// clang-format off
     #if defined(DEV_DEBUG)
     #define PERIPHERAL_MESSAGE(message) std::cout << "Peripheral " << message
     #else
@@ -54,7 +54,7 @@ namespace Svd2cppObjects
             return &value;
         }
 
-    public:
+    private:
         content value;
     };
 }  // namespace Svd2cppObjects

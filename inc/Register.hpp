@@ -43,6 +43,32 @@ namespace Svd2cppObjects
             *ptr = resetValue;
         }
 
+        IO* operator=(const REG_ADDR& f)
+        {
+            REGISTER_MESSAGE("copy assignment operator\n");
+            ptr = f;
+            return ptr;
+        }
+
+        IO* operator=(REG_ADDR&& f)
+        {
+            REGISTER_MESSAGE("move assignment operator\n");
+            ptr = std::move(f);
+            return ptr;
+        }
+
+        IO* operator()()
+        {
+            REGISTER_MESSAGE("function call operator\n");
+            return ptr;
+        }
+
+        operator REG_ADDR()
+        {
+            REGISTER_MESSAGE("user defined conversion\n");
+            return *ptr;
+        }
+
         explicit operator content*()
         {
             REGISTER_MESSAGE("explicit user defined conversion to pointer\n");

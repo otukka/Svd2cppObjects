@@ -81,10 +81,9 @@ TEST_CASE("Peripheral from Peripheral class init", "[PeripheralTests]")
     auto periph = PeripheralType(base);
 
     CHECK(reinterpret_cast<REG_ADDR>(periph->reg1->byte1.internalAddress()) == base);
-    CHECK(reinterpret_cast<REG_ADDR>(periph.value.reg2->word.internalAddress()) == (base + 0x04));
+    CHECK(reinterpret_cast<REG_ADDR>(periph->reg2->word.internalAddress()) == (base + 0x04));
 
-    // Syntax options
-    periph.value.reg1.reset();
+    periph->reg1.reset();
     periph->reg2.reset();
 
     periph->reg1->byte1->set(0x00);
@@ -99,6 +98,9 @@ TEST_CASE("Peripheral from Peripheral class init", "[PeripheralTests]")
 
     CHECK(periph->reg2->word == reg2reset);
 
+    periph->reg2->word = 0x12345678;
+    CHECK(periph->reg2->word == 0x12345678);
+
     printMemoryMock(*arr);
 }
 
@@ -112,23 +114,7 @@ TEST_CASE("Smart pointer peripheral using Peripheral class", "[PeripheralTests]"
 
     auto periph = std::make_shared<PeripheralType>(base);
 
-    CHECK(reinterpret_cast<REG_ADDR>(periph->value.reg1->byte1.internalAddress()) == base);
-    CHECK(reinterpret_cast<REG_ADDR>(periph->value.reg2->word.internalAddress()) == (base + 0x04));
-
-    periph->value.reg1.reset();
-    periph->value.reg2.reset();
-
-    periph->value.reg1->byte1->set(0xAA);
-    periph->value.reg1->byte2->set(0xBB);
-    periph->value.reg1->byte3->set(0xCC);
-    periph->value.reg1->byte4->set(0xDD);
-
-    CHECK(periph->value.reg1->byte1->get() == 0xAA);
-    CHECK(periph->value.reg1->byte2->get() == 0xBB);
-    CHECK(periph->value.reg1->byte3->get() == 0xCC);
-    CHECK(periph->value.reg1->byte4->get() == 0xDD);
-
-    CHECK(periph->value.reg2->word == reg2reset);
+    // Nothing to do. This is useless as there is no access to registers.
 
     printMemoryMock(*arr);
 }
@@ -159,8 +145,7 @@ TEST_CASE("Smart pointer (new) peripheral using peripheral class", "[PeripheralT
 
     auto periph = std::shared_ptr<PeripheralType>(new PeripheralType(base));
 
-    periph->value.reg2.reset();
-    CHECK(periph->value.reg2->word == reg2reset);
+    // Nothing to do. This is useless as there is no access to registers.
 
     printMemoryMock(*arr);
 }
