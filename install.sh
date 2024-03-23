@@ -1,7 +1,5 @@
 #! /bin/bash
 
-PYTHONVERSION="3.9.0"
-
 ROOT="$(dirname "$(readlink -fm "$0")")"
 
 cd "$ROOT"

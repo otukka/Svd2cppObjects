@@ -13,7 +13,7 @@ int main(void)
     auto GPIOG = PeripheralFactory::instance()->createGPIOG();
 
     // Do not do anything else than read this pointer address (SEGFAULT)
-    auto p = GPIOG->ODR->ODR6.internalAddress();
+    auto p = GPIOG->ODR->ODR6->internalAddress();
 
     assert(p);
 

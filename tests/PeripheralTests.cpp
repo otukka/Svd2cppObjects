@@ -52,8 +52,8 @@ TEST_CASE("Peripheral from struct init", "[PeripheralTests]")
     std::cout << "\nSimulated memory is at address: 0x" << std::hex << base << "\n\n";
     auto periph = peripheral1(base);
 
-    CHECK(reinterpret_cast<REG_ADDR>(periph.reg1->byte1.internalAddress()) == base);
-    CHECK(reinterpret_cast<REG_ADDR>(periph.reg2->word.internalAddress()) == (base + 0x04));
+    CHECK(reinterpret_cast<REG_ADDR>(periph.reg1->byte1->internalAddress()) == base);
+    CHECK(reinterpret_cast<REG_ADDR>(periph.reg2->word->internalAddress()) == (base + 0x04));
 
     periph.reg1.reset();
     periph.reg2.reset();
@@ -80,8 +80,8 @@ TEST_CASE("Peripheral from Peripheral class init", "[PeripheralTests]")
     std::cout << "\nSimulated memory is at address: 0x" << std::hex << base << "\n\n";
     auto periph = PeripheralType(base);
 
-    CHECK(reinterpret_cast<REG_ADDR>(periph->reg1->byte1.internalAddress()) == base);
-    CHECK(reinterpret_cast<REG_ADDR>(periph->reg2->word.internalAddress()) == (base + 0x04));
+    CHECK(reinterpret_cast<REG_ADDR>(periph->reg1->byte1->internalAddress()) == base);
+    CHECK(reinterpret_cast<REG_ADDR>(periph->reg2->word->internalAddress()) == (base + 0x04));
 
     periph->reg1.reset();
     periph->reg2.reset();
@@ -96,7 +96,7 @@ TEST_CASE("Peripheral from Peripheral class init", "[PeripheralTests]")
     CHECK(periph->reg1->byte3 == 0x40);
     CHECK(periph->reg1->byte4 == 0xFF);
 
-    CHECK(periph->reg2->word == reg2reset);
+    CHECK(periph->reg2->word->get() == reg2reset);
 
     periph->reg2->word = 0x12345678;
     CHECK(periph->reg2->word == 0x12345678);
@@ -159,8 +159,8 @@ TEST_CASE("Smart pointer (make_shared) peripheral using peripheral struct", "[Pe
     std::cout << "\nSimulated memory is at address: 0x" << std::hex << base << "\n\n";
     auto periph = std::make_shared<peripheral1>(base);
 
-    CHECK(reinterpret_cast<REG_ADDR>(periph->reg1->byte1.internalAddress()) == base);
-    CHECK(reinterpret_cast<REG_ADDR>(periph->reg2->word.internalAddress()) == (base + 0x04));
+    CHECK(reinterpret_cast<REG_ADDR>(periph->reg1->byte1->internalAddress()) == base);
+    CHECK(reinterpret_cast<REG_ADDR>(periph->reg2->word->internalAddress()) == (base + 0x04));
 
     periph->reg2.reset();
 

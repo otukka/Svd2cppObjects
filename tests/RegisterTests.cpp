@@ -46,20 +46,20 @@ TEST_CASE("Basic register init")
 
     printMemoryMock(*arr);
 
-    CHECK(reg->byte1.get() == 0x4);
-    CHECK(reg->byte2.get() == 0x3);
-    CHECK(reg->byte3.get() == 0x2);
-    CHECK(reg->byte4.get() == 0x1);
+    CHECK(reg->byte1->get() == 0x4);
+    CHECK(reg->byte2->get() == 0x3);
+    CHECK(reg->byte3->get() == 0x2);
+    CHECK(reg->byte4->get() == 0x1);
 
-    CHECK(reg->byte1.internalValue() == *reinterpret_cast<REG_ADDR*>(&arr->at(1)));
-    CHECK(reg->byte2.internalValue() == *reinterpret_cast<REG_ADDR*>(&arr->at(1)));
-    CHECK(reg->byte3.internalValue() == *reinterpret_cast<REG_ADDR*>(&arr->at(1)));
-    CHECK(reg->byte4.internalValue() == *reinterpret_cast<REG_ADDR*>(&arr->at(1)));
+    CHECK(reg->byte1->internalValue() == *reinterpret_cast<REG_ADDR*>(&arr->at(1)));
+    CHECK(reg->byte2->internalValue() == *reinterpret_cast<REG_ADDR*>(&arr->at(1)));
+    CHECK(reg->byte3->internalValue() == *reinterpret_cast<REG_ADDR*>(&arr->at(1)));
+    CHECK(reg->byte4->internalValue() == *reinterpret_cast<REG_ADDR*>(&arr->at(1)));
 
-    CHECK(reg->byte1.internalAddress() == reinterpret_cast<REG_ADDR*>(&arr->at(1)));
-    CHECK(reg->byte2.internalAddress() == reinterpret_cast<REG_ADDR*>(&arr->at(1)));
-    CHECK(reg->byte3.internalAddress() == reinterpret_cast<REG_ADDR*>(&arr->at(1)));
-    CHECK(reg->byte4.internalAddress() == reinterpret_cast<REG_ADDR*>(&arr->at(1)));
+    CHECK(reg->byte1->internalAddress() == reinterpret_cast<REG_ADDR*>(&arr->at(1)));
+    CHECK(reg->byte2->internalAddress() == reinterpret_cast<REG_ADDR*>(&arr->at(1)));
+    CHECK(reg->byte3->internalAddress() == reinterpret_cast<REG_ADDR*>(&arr->at(1)));
+    CHECK(reg->byte4->internalAddress() == reinterpret_cast<REG_ADDR*>(&arr->at(1)));
 
     printMemoryMock(*arr);
 }
