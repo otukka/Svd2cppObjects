@@ -17,14 +17,6 @@ namespace
     #endif
     // clang-format on
 
-    constexpr auto ones(size_t width)
-    {
-        if ((width / 8) == sizeof(REG_ADDR))
-        {
-            return static_cast<REG_ADDR>(std::numeric_limits<REG_ADDR>::max());
-        }
-        return static_cast<REG_ADDR>(((1 << (width)) - 1));
-    }
 }
 
 namespace Svd2cppObjects
@@ -87,47 +79,86 @@ namespace Svd2cppObjects
         void set()
         {
             BITFIELD_MESSAGE("set()\n");
-            merge(ones(width));
+            set(ones());
         }
 
         void set(REG_ADDR newValue)
         {
             BITFIELD_MESSAGE("set(REG_ADDR newValue)\n");
-            if (newValue <= ones(width))
+            if (newValue <= ones())
             {
-                clear();
-                merge(newValue);
+                auto old = read();
+                auto unchanged = old & unmask();
+                auto changed = newValue << shift;
+                write(changed | unchanged);
             }
         }
 
         void merge(REG_ADDR newValue)
         {
             BITFIELD_MESSAGE("merge(REG_ADDR newValue)\n");
-            if (newValue <= ones(width))
+            if (newValue <= ones())
             {
-                *value |= (newValue << shift);
+                auto old = read();
+                write(old | (newValue << shift));
             }
         }
 
         REG_ADDR get()
         {
             BITFIELD_MESSAGE("get()\n");
-            return ((*value & (ones(width) << shift)) >> shift);
+            return ((read() & mask()) >> shift);
         }
 
         void clear()
         {
             BITFIELD_MESSAGE("clear()\n");
-            *value &= ~(ones(width) << shift);
+            *value &= ~(ones() << shift);
         }
 
         void flip()
         {
             BITFIELD_MESSAGE("flip()\n");
-            *value ^= (ones(width) << shift);
+            *value ^= (ones() << shift);
+        }
+
+    private:
+        IO* value;
+
+        REG_ADDR read()
+        {
+            return *value;
+        }
+
+        void write(REG_ADDR newValue)
+        {
+            *value = newValue;
+        }
+
+        REG_ADDR ones()
+        {
+            // Determine the maximum shift allowed for the type
+            unsigned int max_shift = sizeof(REG_ADDR) * 8 - 1;
+            if ((width / 8) == sizeof(REG_ADDR))
+            {
+                return static_cast<REG_ADDR>(std::numeric_limits<REG_ADDR>::max());
+            }
+            // Ensure the shift does not exceed the maximum allowed shift
+            return static_cast<REG_ADDR>((1 << std::min(width, max_shift)) - 1);
+        }
+
+        REG_ADDR mask()
+        {
+            return static_cast<REG_ADDR>(ones() << shift);
+        }
+
+        REG_ADDR unmask()
+        {
+            return static_cast<REG_ADDR>(~mask());
         }
 
 #if defined(TEST_CODE)
+    public:
         REG_ADDR internalValue()
         {
             BITFIELD_MESSAGE("internalValue()\n");
@@ -139,8 +170,6 @@ namespace Svd2cppObjects
             return value;
         }
 #endif  // TEST_CODE
-    private:
-        IO* value;
     };
 
 }  // namespace Svd2cppObjects

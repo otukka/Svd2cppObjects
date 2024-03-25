@@ -169,6 +169,24 @@ TEST_CASE("Set")
         CHECK(bits->get() == 0xFFFFFFFF);
         CHECK(bits->internalValue() == 0xFFFFFFFF);
     }
+
+    // Overwrite existing value
+    {
+        INIT_BITS(8, 8);
+        *p = 0xF0F0F0F0;
+        bits->set(0xE);
+        CHECK(bits->get() == 0xE);
+        CHECK(bits->internalValue() == 0xF0F00EF0);
+    }
+
+    // Overwrite existing value
+    {
+        INIT_BITS(8, 8);
+        *p = 0xF0F0F0F0;
+        bits->set();
+        CHECK(bits->get() == 0xFF);
+        CHECK(bits->internalValue() == 0xF0F0FFF0);
+    }
 }
 
 TEST_CASE("Set with overflowing value")
@@ -330,6 +348,15 @@ TEST_CASE("Merge")
         bits->merge(0xA);
         CHECK(bits->get() == 0xA);
         CHECK(bits->internalValue() == 0xA0);
+    }
+
+    // Merge half-byte
+    {
+        INIT_BITS(4, 4);
+        bits->merge(0xA);
+        bits->merge(0x5);
+        CHECK(bits->get() == 0xF);
+        CHECK(bits->internalValue() == 0xF0);
     }
 }
 
