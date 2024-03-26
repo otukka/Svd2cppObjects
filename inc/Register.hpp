@@ -27,6 +27,10 @@ namespace Svd2cppObjects
     {
     public:
         Register() = delete;
+        Register(const Register&) = delete;
+        Register& operator=(const Register&) = delete;
+        Register(Register&&) = delete;
+        Register& operator=(Register&&) = delete;
 
         explicit Register(REG_ADDR addr) : value{addr + offset}, ptr{reinterpret_cast<IO*>(addr + offset)}
         {
@@ -46,14 +50,14 @@ namespace Svd2cppObjects
         IO* operator=(const REG_ADDR& f)
         {
             REGISTER_MESSAGE("copy assignment operator\n");
-            ptr = f;
+            *ptr = f;
             return ptr;
         }
 
         IO* operator=(REG_ADDR&& f)
         {
             REGISTER_MESSAGE("move assignment operator\n");
-            ptr = std::move(f);
+            *ptr = std::move(f);
             return ptr;
         }
 

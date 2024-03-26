@@ -19,10 +19,14 @@ TEST_CASE("Basic factory use")
     memset(arr, 0, 256);
 
     auto base = reinterpret_cast<REG_ADDR>(arr);
-    auto object = GROUP::PER1{base};
+
+    GROUP::PER1 object(base);
 
     CHECK(object->REG1->FIELD == 0x0);
+    CHECK(object->REG2->FIELD == 0x0);
+
     object->REG1->FIELD = 0xfafafafa;
+
     CHECK(object->REG1->FIELD == 0xfafafafa);
     CHECK(object->REG2->FIELD == 0x0);
 

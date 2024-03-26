@@ -26,7 +26,11 @@ namespace Svd2cppObjects
     class Bitfield
     {
     public:
-        Bitfield() = default;
+        Bitfield() = delete;
+        Bitfield(const Bitfield&) = delete;
+        Bitfield& operator=(const Bitfield&) = delete;
+        Bitfield(Bitfield&&) = delete;
+        Bitfield& operator=(Bitfield&&) = delete;
 
         explicit Bitfield(REG_ADDR addr) : value(reinterpret_cast<REG_ADDR*>(addr))
         {

@@ -50,7 +50,7 @@ TEST_CASE("Peripheral from struct init", "[PeripheralTests]")
 
     auto base = reinterpret_cast<REG_ADDR>(&arr->at(3));
     std::cout << "\nSimulated memory is at address: 0x" << std::hex << base << "\n\n";
-    auto periph = peripheral1(base);
+    peripheral1 periph(base);
 
     CHECK(reinterpret_cast<REG_ADDR>(periph.reg1->byte1->internalAddress()) == base);
     CHECK(reinterpret_cast<REG_ADDR>(periph.reg2->word->internalAddress()) == (base + 0x04));
@@ -78,7 +78,7 @@ TEST_CASE("Peripheral from Peripheral class init", "[PeripheralTests]")
 
     auto base = reinterpret_cast<REG_ADDR>(&arr->at(3));
     std::cout << "\nSimulated memory is at address: 0x" << std::hex << base << "\n\n";
-    auto periph = PeripheralType(base);
+    PeripheralType periph(base);
 
     CHECK(reinterpret_cast<REG_ADDR>(periph->reg1->byte1->internalAddress()) == base);
     CHECK(reinterpret_cast<REG_ADDR>(periph->reg2->word->internalAddress()) == (base + 0x04));
@@ -115,22 +115,6 @@ TEST_CASE("Smart pointer peripheral using Peripheral class", "[PeripheralTests]"
     auto periph = std::make_shared<PeripheralType>(base);
 
     // Nothing to do. This is useless as there is no access to registers.
-
-    printMemoryMock(*arr);
-}
-
-TEST_CASE("Pointer constructor with Peripheral class", "[PeripheralTests]")
-{
-
-    auto arr = memoryMock<REG_ADDR, 8>();
-
-    auto base = reinterpret_cast<REG_ADDR>(&arr->at(3));
-    std::cout << "\nSimulated memory is at address: 0x" << std::hex << base << "\n\n";
-
-    auto periph = *new PeripheralType(base);
-
-    periph->reg2.reset();
-    CHECK(periph->reg2->word == reg2reset);
 
     printMemoryMock(*arr);
 }

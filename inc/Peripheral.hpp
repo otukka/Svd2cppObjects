@@ -10,7 +10,7 @@
 
 namespace
 {
-// clang-format off
+    // clang-format off
     #if defined(DEV_DEBUG)
     #define PERIPHERAL_MESSAGE(message) std::cout << "Peripheral " << message
     #else
@@ -31,8 +31,12 @@ namespace Svd2cppObjects
     {
     public:
         Peripheral() = delete;
+        Peripheral(const Peripheral&) = delete;
+        Peripheral& operator=(const Peripheral&) = delete;
+        Peripheral(Peripheral&&) = delete;
+        Peripheral& operator=(Peripheral&&) = delete;
 
-        explicit Peripheral(REG_ADDR addr) : value{addr + offset}
+        explicit Peripheral(const REG_ADDR addr) : value{addr + offset}
         {
             PERIPHERAL_MESSAGE("Address: 0x" << std::hex << addr + offset << " constructor\n");
         };

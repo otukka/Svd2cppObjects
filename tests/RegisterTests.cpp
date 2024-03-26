@@ -42,7 +42,7 @@ TEST_CASE("Basic register init")
     using RegisterType = Register<offset, MyRegister::register1, resetValue>;
 
     auto addr = reinterpret_cast<REG_ADDR>(&arr->at(0));
-    auto reg = RegisterType{addr};
+    RegisterType reg(addr);
 
     printMemoryMock(*arr);
 
@@ -73,7 +73,7 @@ TEST_CASE("Basic getter setter")
     const size_t resetValue{0};
 
     auto addr = reinterpret_cast<REG_ADDR>(&arr->at(2));
-    auto reg = Register<offset, MyRegister::register1, resetValue>{addr};
+    Register<offset, MyRegister::register1, resetValue> reg(addr);
 
     reg->byte1 = 0x1;
     reg->byte2 = 0xFF;
@@ -97,7 +97,7 @@ TEST_CASE("reset")
     const size_t resetValue{0xDEADBEEF};
 
     auto addr = reinterpret_cast<REG_ADDR>(&arr->at(0x04));
-    auto reg = Register<offset, MyRegister::register1, resetValue>{addr};
+    Register<offset, MyRegister::register1, resetValue> reg(addr);
 
     reg->byte1 = 0x01;
     reg->byte2 = 0xFF;
@@ -110,6 +110,82 @@ TEST_CASE("reset")
     CHECK(reg->byte2 == 0xAD);
     CHECK(reg->byte3 == 0xBE);
     CHECK(reg->byte4 == 0xEF);
+
+    printMemoryMock(*arr);
+}
+
+TEST_CASE("modify registerr")
+{
+
+    auto arr = memoryMock<REG_ADDR, 8>();
+
+    const size_t offset{0};
+    const size_t resetValue{0xDEADBEEF};
+
+    auto addr = reinterpret_cast<REG_ADDR>(&arr->at(0x04));
+    Register<offset, MyRegister::register1, resetValue> reg(addr);
+
+    reg = 0x01FF0A05;
+
+    reg.reset();
+
+    CHECK(reg->byte1 == 0xDE);
+    CHECK(reg->byte2 == 0xAD);
+    CHECK(reg->byte3 == 0xBE);
+    CHECK(reg->byte4 == 0xEF);
+
+    printMemoryMock(*arr);
+}
+
+TEST_CASE("Cannot modify register address")
+{
+
+    auto arr = memoryMock<REG_ADDR, 8>();
+
+    const size_t offset{0};
+    const size_t resetValue{0xDEADBEEF};
+
+    auto addr = reinterpret_cast<REG_ADDR>(&arr->at(0x04));
+    Register<offset, MyRegister::register1, resetValue> reg(addr);
+
+    reg = 0x01FF0A05;
+
+    CHECK(reg->byte1 == 0x01);
+    CHECK(reg->byte2 == 0xFF);
+    CHECK(reg->byte3 == 0x0A);
+    CHECK(reg->byte4 == 0x05);
+
+    CHECK(reg->byte1->internalValue() == *reinterpret_cast<REG_ADDR*>(&arr->at(4)));
+
+    reg.reset();
+
+    CHECK(reg->byte1 == 0xDE);
+    CHECK(reg->byte2 == 0xAD);
+    CHECK(reg->byte3 == 0xBE);
+    CHECK(reg->byte4 == 0xEF);
+
+    CHECK(reg->byte1->internalValue() == *reinterpret_cast<REG_ADDR*>(&arr->at(4)));
+
+    REG_ADDR value = 0;
+
+    reg = std::move(value);
+
+    CHECK(reg->byte1 == 0);
+    CHECK(reg->byte2 == 0);
+    CHECK(reg->byte3 == 0);
+    CHECK(reg->byte4 == 0);
+
+    CHECK(reg->byte1->internalValue() == *reinterpret_cast<REG_ADDR*>(&arr->at(4)));
+
+    const REG_ADDR value2 = 0x01234567;
+
+    reg = value2;
+    CHECK(reg->byte1 == 0x01);
+    CHECK(reg->byte2 == 0x23);
+    CHECK(reg->byte3 == 0x45);
+    CHECK(reg->byte4 == 0x67);
+
+    CHECK(reg->byte1->internalValue() == *reinterpret_cast<REG_ADDR*>(&arr->at(4)));
 
     printMemoryMock(*arr);
 }
