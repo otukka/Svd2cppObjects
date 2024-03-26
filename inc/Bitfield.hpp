@@ -1,6 +1,7 @@
 #ifndef __BITFIELD_H__
 #define __BITFIELD_H__
 
+#include <algorithm>
 #include <array>
 #include <cstddef>
 #include <iostream>
@@ -142,7 +143,7 @@ namespace Svd2cppObjects
         REG_ADDR ones()
         {
             // Determine the maximum shift allowed for the type
-            unsigned int max_shift = sizeof(REG_ADDR) * 8 - 1;
+            REG_ADDR max_shift = sizeof(REG_ADDR) * 8 - 1;
             if ((width / 8) == sizeof(REG_ADDR))
             {
                 return static_cast<REG_ADDR>(std::numeric_limits<REG_ADDR>::max());
